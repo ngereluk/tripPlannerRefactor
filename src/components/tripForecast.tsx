@@ -40,19 +40,6 @@ export const TripForecast = (props: tripForecastProps) => {
         formattedStartDate: formattedStartDate,
         formattedEndDate: formattedEndDate,
       });
-
-      // const forecast = await fetch("/api/getTripForecast", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     trailHeadLong: trailHeadLong,
-      //     trailHeadLat: trailHeadLat,
-      //     formattedStartDate: formattedStartDate,
-      //     formattedEndDate: formattedEndDate,
-      //   }),
-      // }).then((res) => res.json());
       setTripForecast(res.forecast);
       setForecastHeight("31vh");
     }
