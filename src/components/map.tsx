@@ -493,9 +493,10 @@ const MyMapContainer = ({
 };
 
 const KananaskisMap = (props: innerMapProps) => {
-  //, setStaticRouteData] = useState([]);
   const [isCampsite, setIsCampsite] = useState(true);
   const [segmentLengthOpacity, setSegmentLengthOpacity] = useState("none");
+  const [coordinatesMapToArray, setCoordinatesMapToArray] =
+    useState<number[][]>();
   const {
     data: staticRouteData,
     isLoading,
@@ -505,41 +506,30 @@ const KananaskisMap = (props: innerMapProps) => {
   //if is loading
   //if is error
   const {
-    data: orsData,
     isLoading: orsIsLoading,
     isError: orsIsError,
     isSuccess: orsIsSuccess,
-    refetch: orsRefetch,
-  } = api.openRouteService.getRouteData.useQuery(
-    {
-      coordinates: [50.814061, -115.163614],
-      authorization: "5b3ce3597851110001cf62487304b26a75f24a8cb943fa137eb6a204",
-    },
-    { enabled: false }
-  );
-  // const onClick = () => { orsRefetch() }
+    mutateAsync,
+  } = api.openRouteService.getRouteData.useMutation();
 
-  async function fetchORSData(coordinatesMapToArray: number[][]) {
-    orsRefetch();
-    // try {
-    //   const res = await fetch("/api/openRouteService", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       coordinates: coordinatesMapToArray,
-    //       authorization:
-    //         "5b3ce3597851110001cf62487304b26a75f24a8cb943fa137eb6a204",
-    //     }),
-    //   });
-    //   const resJson = await res.json();
-    //   return resJson.geojsonObject as unknown as GeoJSONProps["data"];
-    // } catch (e: any) {
-    //   console.log("error fetching route ", e);
-    // }
-    //console.log("orsData ", orsData);
+  async function getORSData(coordinatesMapToArray: number[][]) {
+    if (coordinatesMapToArray !== undefined) {
+      const res = await mutateAsync({
+        coordinates: coordinatesMapToArray,
+      });
+      props.setGeojsonObjects([res.geojsonObject]);
+    }
   }
+
+  useEffect(() => {
+    if (props.coordinatesArray.length > 1) {
+      const coordinatesMapToArray = props.coordinatesArray.map((x) => [
+        x.long,
+        x.lat,
+      ]);
+      getORSData(coordinatesMapToArray);
+    }
+  }, [props.coordinatesArray]);
 
   const map = useMap();
   useEffect(() => {
@@ -552,21 +542,6 @@ const KananaskisMap = (props: innerMapProps) => {
       map.setView(props.zoomToSiteCoord, 13);
     }
   }, [props.zoomToSiteCoord]);
-
-  useEffect(() => {
-    if (props.coordinatesArray.length > 1) {
-      const coordinatesMapToArray = props.coordinatesArray.map((x) => [
-        x.long,
-        x.lat,
-      ]);
-      (async () => {
-        let routeData = await fetchORSData(coordinatesMapToArray);
-        if (routeData != undefined) {
-          props.setGeojsonObjects([routeData]);
-        }
-      })();
-    }
-  }, [props.coordinatesArray]);
 
   function setRouteCoordinates(long: number, lat: number) {
     if (
@@ -594,17 +569,20 @@ const KananaskisMap = (props: innerMapProps) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
-      {/* el for routes added by user clicks */}
-      {props.geojsonObjects.map((data) => {
-        return (
-          <GeoJSON
-            key={JSON.stringify(data)}
-            attribution="&copy; credits due..."
-            //@ts-ignore
-            data={data}
-          />
-        );
-      })}
+      {/* el for routes added by user click */}
+      {
+        //   orsData && [orsData.geojsonObject]
+        props.geojsonObjects.map((data) => {
+          return (
+            <GeoJSON
+              key={JSON.stringify(data)}
+              attribution="&copy; credits due..."
+              //@ts-ignore
+              data={data}
+            />
+          );
+        })
+      }
       {/* el for static generated routes */}
       {staticRouteData &&
         staticRouteData.StaticRouteData.map((data, i) => {
