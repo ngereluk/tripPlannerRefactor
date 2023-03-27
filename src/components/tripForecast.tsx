@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { tripCoordObj, Forecast } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { api } from "~/utils/api";
 
 export interface tripForecastProps {
   tripCoordWithBool: tripCoordObj[];
@@ -15,6 +16,12 @@ export const TripForecast = (props: tripForecastProps) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [forecastHeight, setForecastHeight] = useState("15vh");
+  const {
+    isLoading: forecastDataIsLoading,
+    isError: forecastDataIsError,
+    isSuccess: forecastDataIsSuccess,
+    mutateAsync: getForecastData,
+  } = api.getTripForecast.getData.useMutation();
 
   async function getForecast() {
     if (startDate != null && endDate != null) {
@@ -26,19 +33,27 @@ export const TripForecast = (props: tripForecastProps) => {
       const trailHeadLong = props.tripCoordWithBool[0].coordinate[0].toString();
       //@ts-ignore
       const trailHeadLat = props.tripCoordWithBool[0].coordinate[1].toString();
-      const forecast = await fetch("/api/getTripForecast", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          trailHeadLong: trailHeadLong,
-          trailHeadLat: trailHeadLat,
-          formattedStartDate: formattedStartDate,
-          formattedEndDate: formattedEndDate,
-        }),
-      }).then((res) => res.json());
-      setTripForecast(forecast);
+
+      const res = await getForecastData({
+        trailHeadLong: trailHeadLong,
+        trailHeadLat: trailHeadLat,
+        formattedStartDate: formattedStartDate,
+        formattedEndDate: formattedEndDate,
+      });
+
+      // const forecast = await fetch("/api/getTripForecast", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     trailHeadLong: trailHeadLong,
+      //     trailHeadLat: trailHeadLat,
+      //     formattedStartDate: formattedStartDate,
+      //     formattedEndDate: formattedEndDate,
+      //   }),
+      // }).then((res) => res.json());
+      setTripForecast(res.forecast);
       setForecastHeight("31vh");
     }
   }
