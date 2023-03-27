@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 export interface tripCoordObj {
   coordinate: number[];
   isTrailHead: boolean;
@@ -142,4 +144,9 @@ export interface SiteInfoPanelData {
   amenities: string[][];
   isCampsite: boolean;
   linkToGovtSite: string;
+}
+
+export interface NameAndCoordinates {
+  coordinates: number[];
+  markerName: string;
 }

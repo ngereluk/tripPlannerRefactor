@@ -2,6 +2,8 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { getStaticRouteDataRouter } from "~/server/api/routers/getStaticRouteDataForMap";
 import { openRouteService } from "~/server/api/routers/openRouteService";
 import { getStaticMarkerInfo } from "~/server/api/routers/getStaticMarkerInfo";
+import { getStaticMarkerName } from "~/server/api/routers/getStaticMarkerName";
+import { getRouteDataForTrip } from "~/server/api/routers/getStaticRouteDataForTrip";
 /**
  * This is the primary router for your server.
  *
@@ -11,6 +13,8 @@ export const appRouter = createTRPCRouter({
   getStaticRouteData: getStaticRouteDataRouter,
   openRouteService: openRouteService,
   getStaticMarkerInfo: getStaticMarkerInfo,
+  getStaticMarkerName: getStaticMarkerName,
+  getRouteDataForTrip: getRouteDataForTrip,
 });
 
 // export type definition of API

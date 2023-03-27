@@ -19,9 +19,9 @@ interface siteListProps {
 export const SiteList = (props: siteListProps) => {
   const [selectedMarker, setSelectedMarker] = useState<string>("");
   const {
-    isLoading: orsIsLoading,
-    isError: orsIsError,
-    isSuccess: orsIsSuccess,
+    isLoading: siteDataIsLoading,
+    isError: siteDataIsError,
+    isSuccess: siteDataIsSuccess,
     mutateAsync,
   } = api.getStaticMarkerInfo.getMarkerData.useMutation();
 

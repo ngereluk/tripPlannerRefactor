@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GeoJSONProps } from "react-leaflet";
+import { api } from "~/utils/api";
 import { tripCoordObj, SegmentData } from "../types";
+import { NameAndCoordinates } from "../types";
 var _ = require("lodash");
 
 interface generateTripInfoProps {
@@ -22,47 +24,58 @@ interface generateTripInfoProps {
   setUserError: Dispatch<SetStateAction<string>>;
 }
 export const GenerateTripInfo = (props: generateTripInfoProps) => {
-  // const [tripInfoBtnBkrnd, setTripInfoBtnBkrnd] = useState("white");
+  // const [markerNameJSON, setMarkerNameJSON] = useState<NameAndCoordinates[]>();
+  const {
+    isLoading: siteDataIsLoading,
+    isError: siteDataIsError,
+    isSuccess: siteDataIsSuccess,
+    mutateAsync: getMarkers,
+  } = api.getStaticMarkerName.getData.useMutation();
+  const {
+    isLoading: routeDataIsLoading,
+    isError: routeDataIsError,
+    isSuccess: routeDataIsSuccess,
+    mutateAsync: getRouteData,
+  } = api.getRouteDataForTrip.getData.useMutation();
+
   async function getStaticRouteData(segmentCoordinates: number[][]) {
-    const data = await fetch("/api/getStaticRouteDataForTrip", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(segmentCoordinates),
-    }).then((res) => res.json());
-    return data;
+    const res = await getRouteData({ segmentCoordinates: segmentCoordinates });
+    return res;
   }
 
   async function getStaticMarkerName() {
-    const data = await fetch("/api/getStaticMarkerName", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    }).then((res) => res.json());
+    const res = await getMarkers();
+    const data = res.MarkerNamesAndCoord;
+    //setMarkerNameJSON(data);
     return data;
   }
+
   async function generateTripInfo() {
     props.setSiteMenuViz(false);
     props.setSiteInfoPanelViz(false);
     //////////////////////////////////////
     //get campsite names
     let inputCoordWithCampsiteBool = [] as tripCoordObj[];
+
     const markerNameJSON = await getStaticMarkerName();
-    //@ts-ignore
-    for (let coord of props.geojsonObjects[0].metadata.query.coordinates) {
-      const markerNameObj = markerNameJSON.find(
-        //@ts-ignore
-        (markerNameStaticObj) =>
-          markerNameStaticObj.coordinates[0] === coord[0] &&
-          markerNameStaticObj.coordinates[1] === coord[1]
-      );
-      inputCoordWithCampsiteBool.push({
-        coordinate: coord,
-        isTrailHead: false,
-        markerName: markerNameObj.markerName,
-      });
+    console.log("markerNameJSON ", markerNameJSON);
+    if (markerNameJSON !== undefined) {
+      //@ts-ignore
+      for (let coord of props.geojsonObjects[0].metadata.query.coordinates) {
+        const markerNameObj = markerNameJSON.find(
+          //@ts-ignore
+          (markerNameStaticObj) =>
+            markerNameStaticObj.coordinates[0] === coord[0] &&
+            markerNameStaticObj.coordinates[1] === coord[1]
+        );
+        if (markerNameObj !== undefined) {
+          inputCoordWithCampsiteBool.push({
+            coordinate: coord,
+            isTrailHead: false,
+            markerName: markerNameObj.markerName,
+          });
+        }
+      }
     }
     ///////////////////////////////////////////
     const trailHeadCoordinates = [
