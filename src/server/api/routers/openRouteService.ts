@@ -22,10 +22,8 @@ export const openRouteService = createTRPCRouter({
             "5b3ce3597851110001cf62487304b26a75f24a8cb943fa137eb6a204",
         },
       });
-      console.log("input.coordinates ", input.coordinates);
 
       const geojsonObject = await ormResponse.json();
-      console.log({ geojsonObject });
       return {
         geojsonObject: geojsonObject as GeoJSONProps["data"],
       };

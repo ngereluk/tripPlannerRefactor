@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { api } from "~/utils/api";
 import { SiteInfoPanelData } from "../types";
 
 interface siteListProps {
@@ -17,20 +18,19 @@ interface siteListProps {
 
 export const SiteList = (props: siteListProps) => {
   const [selectedMarker, setSelectedMarker] = useState<string>("");
+  const {
+    isLoading: orsIsLoading,
+    isError: orsIsError,
+    isSuccess: orsIsSuccess,
+    mutateAsync,
+  } = api.getStaticMarkerInfo.getMarkerData.useMutation();
 
   async function getStaticMarkerData() {
-    const res = await fetch("/api/getStaticMarkerInfo", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
+    if (selectedMarker !== "") {
+      const res = await mutateAsync({
         selectedMarker: selectedMarker,
-      }),
-    });
-    if (res !== null) {
-      const resJson = (await res.json()) as SiteInfoPanelData;
-      props.setSiteInfoPanelData(resJson);
+      });
+      props.setSiteInfoPanelData(res.markerData);
     }
   }
 
