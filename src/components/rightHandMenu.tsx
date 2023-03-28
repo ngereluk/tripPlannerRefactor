@@ -1,43 +1,53 @@
-import { GenerateTripInfo } from "./generateTripInfoBtn";
-import { GeoJSONProps, useMap } from "react-leaflet";
-import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { tripCoordObj, SegmentData } from "../types";
 import TripInfo from "./tripInfo";
 import TripForecast from "./tripForecast";
 import SiteList from "./siteList";
 import SiteInfoPanel from "./siteInfoPanel";
-import { SiteInfoPanelData } from "../types";
+import { SiteInfoPanelData, Forecast } from "../types";
 
 interface rightHandMenuProps {
-  geojsonObjects: GeoJSONProps["data"][];
   setZoomToSiteCoord: Dispatch<
     SetStateAction<{
       lat: number;
       lng: number;
     }>
   >;
-  zoomToSiteCoord: {
-    lat: number;
-    lng: number;
-  };
   tripCoordWithBool: tripCoordObj[];
   segmentCoordinates: SegmentData[];
   tripInfoViz: boolean;
-  sestTripInfoViz: Dispatch<SetStateAction<boolean>>;
+  setTripInfoViz: Dispatch<SetStateAction<boolean>>;
   tripInfoTitleViz: boolean;
   tripForecastViz: boolean;
   siteInfoPanelViz: boolean;
   setSiteInfoPanelViz: Dispatch<SetStateAction<boolean>>;
-  lastClickedLong: number;
   setLastClickedLong: Dispatch<SetStateAction<number>>;
   setSiteMenuViz: Dispatch<SetStateAction<boolean>>;
   siteMenuViz: boolean;
-  sestTripForecastViz: Dispatch<SetStateAction<boolean>>;
+  setTripForecastViz: Dispatch<SetStateAction<boolean>>;
   tripForecastTitleViz: boolean;
-  setTripForecastTitleViz: Dispatch<SetStateAction<boolean>>;
+  tripForecast: Forecast | undefined;
+  setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
 }
 
-export const RightHandMenu = (props: rightHandMenuProps) => {
+export const RightHandMenu = ({
+  setZoomToSiteCoord,
+  tripCoordWithBool,
+  segmentCoordinates,
+  tripInfoViz,
+  setTripInfoViz,
+  tripInfoTitleViz,
+  tripForecastViz,
+  siteInfoPanelViz,
+  setSiteInfoPanelViz,
+  setLastClickedLong,
+  setSiteMenuViz,
+  siteMenuViz,
+  setTripForecastViz,
+  tripForecastTitleViz,
+  tripForecast,
+  setTripForecast,
+}: rightHandMenuProps) => {
   const [arrowIcon, setarrowIcon] = useState("/upArrow.svg");
   const [siteInfoPanelData, setSiteInfoPanelData] = useState<SiteInfoPanelData>(
     {
@@ -85,29 +95,28 @@ export const RightHandMenu = (props: rightHandMenuProps) => {
                 justifyContent: "flex-start",
                 width: "100%",
                 padding: "3%",
-                display: props.tripInfoTitleViz === true ? "flex" : "none",
+                display: tripInfoTitleViz === true ? "flex" : "none",
                 color: "black",
                 backgroundColor: "rgba(26, 115, 232,0.5)",
                 fontSize: "1.2rem",
                 borderRadius: " 25px 25px 0px 0px",
               }}
               onClick={() => {
-                const newViz = !props.tripInfoViz;
-                props.sestTripInfoViz(newViz);
+                const newViz = !tripInfoViz;
+                setTripInfoViz(newViz);
               }}
             >
               <div>Your Trip Plan</div>
             </div>
             <TripInfo
-              tripCoordWithBool={props.tripCoordWithBool}
-              segmentCoordinates={props.segmentCoordinates}
-              tripInfoViz={props.tripInfoViz}
-              sestTripInfoViz={props.sestTripInfoViz}
+              tripCoordWithBool={tripCoordWithBool}
+              segmentCoordinates={segmentCoordinates}
+              tripInfoViz={tripInfoViz}
             />
           </div>
           <div
             style={{
-              display: props.tripForecastTitleViz ? "block" : "none",
+              display: tripForecastTitleViz ? "block" : "none",
               backgroundColor: "rgba(26, 115, 232,0.5)",
               fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
               padding: "3%",
@@ -117,17 +126,18 @@ export const RightHandMenu = (props: rightHandMenuProps) => {
               borderBottom: "solid #70757a",
             }}
             onClick={() => {
-              const newForecastViz = !props.tripForecastViz;
-              props.sestTripForecastViz(newForecastViz);
+              const newForecastViz = !tripForecastViz;
+              setTripForecastViz(newForecastViz);
             }}
           >
             Trip Forecast
           </div>
           <TripForecast
-            tripCoordWithBool={props.tripCoordWithBool}
-            sestTripInfoViz={props.sestTripInfoViz}
-            tripForecastViz={props.tripForecastViz}
-            sestTripForecastViz={props.sestTripForecastViz}
+            tripCoordWithBool={tripCoordWithBool}
+            setTripInfoViz={setTripInfoViz}
+            tripForecastViz={tripForecastViz}
+            tripForecast={tripForecast}
+            setTripForecast={setTripForecast}
           />{" "}
           <div style={{ padding: "4%" }}>
             <div
@@ -142,14 +152,12 @@ export const RightHandMenu = (props: rightHandMenuProps) => {
                 cursor: "pointer",
               }}
               onClick={() => {
-                const newMenuViz = !props.siteMenuViz;
-                props.setSiteMenuViz(newMenuViz);
+                const newMenuViz = !siteMenuViz;
+                setSiteMenuViz(newMenuViz);
                 const icon =
-                  props.siteMenuViz === false
-                    ? "/upArrow.svg"
-                    : "/downArrow.svg";
+                  siteMenuViz === false ? "/upArrow.svg" : "/downArrow.svg";
                 setarrowIcon(icon);
-                props.setSiteInfoPanelViz(false);
+                setSiteInfoPanelViz(false);
               }}
             >
               <div>Backcounrty Sites</div>
@@ -163,18 +171,18 @@ export const RightHandMenu = (props: rightHandMenuProps) => {
             </div>
           </div>
           <SiteList
-            siteMenuViz={props.siteMenuViz}
-            setZoomToSiteCoord={props.setZoomToSiteCoord}
-            setSiteMenuViz={props.setSiteMenuViz}
+            siteMenuViz={siteMenuViz}
+            setZoomToSiteCoord={setZoomToSiteCoord}
+            setSiteMenuViz={setSiteMenuViz}
             setSiteInfoPanelData={setSiteInfoPanelData}
-            setSiteInfoPanelViz={props.setSiteInfoPanelViz}
-            setLastClickedLong={props.setLastClickedLong}
+            setSiteInfoPanelViz={setSiteInfoPanelViz}
+            setLastClickedLong={setLastClickedLong}
           />
         </div>
         <div>
           <SiteInfoPanel
             siteInfoPanelData={siteInfoPanelData}
-            siteInfoPanelViz={props.siteInfoPanelViz}
+            siteInfoPanelViz={siteInfoPanelViz}
           />
         </div>
       </div>

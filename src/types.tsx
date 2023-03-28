@@ -150,3 +150,11 @@ export interface NameAndCoordinates {
   coordinates: number[];
   markerName: string;
 }
+
+export interface TripInfoObj {
+  coordinate?: number[];
+  isTrailHead?: boolean;
+  markerName?: string;
+  segmentGrossElevation?: number;
+  segmentLength?: number;
+}

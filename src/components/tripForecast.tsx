@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { tripCoordObj, Forecast } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,13 +6,19 @@ import { api } from "~/utils/api";
 
 export interface tripForecastProps {
   tripCoordWithBool: tripCoordObj[];
-  sestTripInfoViz: Dispatch<SetStateAction<boolean>>;
+  setTripInfoViz: Dispatch<SetStateAction<boolean>>;
   tripForecastViz: boolean;
-  sestTripForecastViz: Dispatch<SetStateAction<boolean>>;
+  tripForecast: Forecast | undefined;
+  setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
 }
 
-export const TripForecast = (props: tripForecastProps) => {
-  const [tripForecast, setTripForecast] = useState<Forecast>();
+export const TripForecast = ({
+  tripCoordWithBool,
+  setTripInfoViz,
+  tripForecastViz,
+  tripForecast,
+  setTripForecast,
+}: tripForecastProps) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [forecastHeight, setForecastHeight] = useState("15vh");
@@ -28,11 +34,9 @@ export const TripForecast = (props: tripForecastProps) => {
       const formattedStartDate = startDate.toLocaleDateString("sv");
       const formattedEndDate = endDate.toLocaleDateString("sv");
 
-      props.sestTripInfoViz(false);
-      //@ts-ignore
-      const trailHeadLong = props.tripCoordWithBool[0].coordinate[0].toString();
-      //@ts-ignore
-      const trailHeadLat = props.tripCoordWithBool[0].coordinate[1].toString();
+      setTripInfoViz(false);
+      const trailHeadLong = tripCoordWithBool[0]?.coordinate[0]?.toString();
+      const trailHeadLat = tripCoordWithBool[0]?.coordinate[1]?.toString();
 
       const res = await getForecastData({
         trailHeadLong: trailHeadLong,
@@ -48,7 +52,7 @@ export const TripForecast = (props: tripForecastProps) => {
   return (
     <div
       style={{
-        display: props.tripForecastViz === true ? "block" : "none",
+        display: tripForecastViz === true ? "block" : "none",
         overflowY: "auto",
         height: forecastHeight,
         scrollbarColor: "black !important",

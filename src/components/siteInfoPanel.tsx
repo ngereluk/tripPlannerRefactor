@@ -5,9 +5,12 @@ interface siteInfoPanelProps {
   siteInfoPanelViz: boolean;
 }
 
-const SiteInfoPanel = (props: siteInfoPanelProps) => {
+const SiteInfoPanel = ({
+  siteInfoPanelData,
+  siteInfoPanelViz,
+}: siteInfoPanelProps) => {
   {
-    if (props.siteInfoPanelData.name != "" && props.siteInfoPanelViz === true) {
+    if (siteInfoPanelData.name != "" && siteInfoPanelViz === true) {
       return (
         <div
           style={{
@@ -20,10 +23,7 @@ const SiteInfoPanel = (props: siteInfoPanelProps) => {
             overflowY: "auto",
           }}
         >
-          <img
-            src={props.siteInfoPanelData.imageUrl}
-            style={{ width: "100%" }}
-          />
+          <img src={siteInfoPanelData.imageUrl} style={{ width: "100%" }} />
           <div
             style={{
               display: "flex",
@@ -48,8 +48,8 @@ const SiteInfoPanel = (props: siteInfoPanelProps) => {
                 paddingRight: "2%",
               }}
             >
-              {props.siteInfoPanelData.name +
-                (props.siteInfoPanelData.isCampsite === true
+              {siteInfoPanelData.name +
+                (siteInfoPanelData.isCampsite === true
                   ? " Backcountry Campground"
                   : "")}
             </div>
@@ -62,7 +62,7 @@ const SiteInfoPanel = (props: siteInfoPanelProps) => {
               }}
             >
               {" "}
-              {props.siteInfoPanelData.park}
+              {siteInfoPanelData.park}
             </div>
           </div>
           <div
@@ -77,7 +77,7 @@ const SiteInfoPanel = (props: siteInfoPanelProps) => {
               paddingLeft: "5%",
             }}
           >
-            {props.siteInfoPanelData.amenities.map((amenity) => (
+            {siteInfoPanelData.amenities.map((amenity) => (
               <div
                 key={amenity + Math.random().toString()}
                 style={{
@@ -97,14 +97,14 @@ const SiteInfoPanel = (props: siteInfoPanelProps) => {
             ))}
           </div>
           <div style={{ padding: "5%" }}>
-            <div>Number of sites:{" " + props.siteInfoPanelData.noSites}</div>
-            <div>Water Source:{" " + props.siteInfoPanelData.waterSource}</div>
-            <div>Coordinates:{" " + props.siteInfoPanelData.coordinates}</div>
-            <a href={props.siteInfoPanelData.linkToGovtSite} target="_blank">
+            <div>Number of sites:{" " + siteInfoPanelData.noSites}</div>
+            <div>Water Source:{" " + siteInfoPanelData.waterSource}</div>
+            <div>Coordinates:{" " + siteInfoPanelData.coordinates}</div>
+            <a href={siteInfoPanelData.linkToGovtSite} target="_blank">
               Link to Offical Information Page
             </a>
             <div style={{ paddingTop: "3%" }}>
-              {props.siteInfoPanelData.description}
+              {siteInfoPanelData.description}
             </div>
           </div>
         </div>

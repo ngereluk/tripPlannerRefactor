@@ -1,11 +1,11 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { useMapEvents } from "react-leaflet";
 
 interface myComponentProps {
   setSegmentLengthOpacity: Dispatch<SetStateAction<string>>;
 }
 
-function DetectZoom(props: myComponentProps) {
+function DetectZoom({ setSegmentLengthOpacity }: myComponentProps) {
   const [zoomLevel, setZoomLevel] = useState(10);
 
   const mapEvents = useMapEvents({
@@ -15,10 +15,10 @@ function DetectZoom(props: myComponentProps) {
   });
 
   if (zoomLevel > 11) {
-    props.setSegmentLengthOpacity("block");
+    setSegmentLengthOpacity("block");
   }
   if (zoomLevel <= 11) {
-    props.setSegmentLengthOpacity("none");
+    setSegmentLengthOpacity("none");
   }
   return null;
 }

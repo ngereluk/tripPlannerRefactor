@@ -16,7 +16,14 @@ interface siteListProps {
   setLastClickedLong: Dispatch<SetStateAction<number>>;
 }
 
-export const SiteList = (props: siteListProps) => {
+export const SiteList = ({
+  siteMenuViz,
+  setZoomToSiteCoord,
+  setSiteMenuViz,
+  setSiteInfoPanelData,
+  setSiteInfoPanelViz,
+  setLastClickedLong,
+}: siteListProps) => {
   const [selectedMarker, setSelectedMarker] = useState<string>("");
   const {
     isLoading: siteDataIsLoading,
@@ -30,7 +37,7 @@ export const SiteList = (props: siteListProps) => {
       const res = await mutateAsync({
         selectedMarker: selectedMarker,
       });
-      props.setSiteInfoPanelData(res.markerData);
+      setSiteInfoPanelData(res.markerData);
     }
   }
 
@@ -41,7 +48,7 @@ export const SiteList = (props: siteListProps) => {
   return (
     <div
       style={{
-        display: props.siteMenuViz === false ? "none" : "block",
+        display: siteMenuViz === false ? "none" : "block",
         overflowY: "auto",
         height: "80vh",
         width: "100%",
@@ -58,10 +65,10 @@ export const SiteList = (props: siteListProps) => {
         }}
         onClick={() => {
           setSelectedMarker("Aster Lake");
-          props.setLastClickedLong(-115.20417);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.20417);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.580097,
             lng: -115.20417,
           });
@@ -73,10 +80,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Big Elbow");
-          props.setLastClickedLong(-114.859643);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-114.859643);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.723768,
             lng: -114.859643,
           });
@@ -88,10 +95,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Elbow Lake");
-          props.setLastClickedLong(-115.009242);
-          props.setSiteInfoPanelViz(true);
-          props.setSiteMenuViz(false);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.009242);
+          setSiteInfoPanelViz(true);
+          setSiteMenuViz(false);
+          setZoomToSiteCoord({
             lat: 50.637443,
             lng: -115.009242,
           });
@@ -103,10 +110,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Forks");
-          props.setLastClickedLong(-115.232454);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.232454);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.634741,
             lng: -115.232454,
           });
@@ -119,10 +126,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Jewel Bay");
-          props.setLastClickedLong(-115.082083);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.082083);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 51.023576,
             lng: -115.082083,
           });
@@ -134,10 +141,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Lillian Lake");
-          props.setLastClickedLong(-115.252657);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.252657);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.863738,
             lng: -115.252657,
           });
@@ -149,10 +156,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Mount Romulus");
-          props.setLastClickedLong(-114.98882);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-114.98882);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.76182,
             lng: -114.98882,
           });
@@ -164,10 +171,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Point");
-          props.setLastClickedLong(-115.178892);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.178892);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.627449,
             lng: -115.178892,
           });
@@ -179,10 +186,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Quaite Valley");
-          props.setLastClickedLong(-115.11447);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.11447);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 51.053327,
             lng: -115.11447,
           });
@@ -194,10 +201,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Ribbon Falls");
-          props.setLastClickedLong(-115.229125);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.229125);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.892203,
             lng: -115.229125,
           });
@@ -209,10 +216,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Ribbon Lake");
-          props.setLastClickedLong(-115.248081);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.248081);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.886506,
             lng: -115.248081,
           });
@@ -224,10 +231,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Three Isle Lake");
-          props.setLastClickedLong(-115.267343);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.267343);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.630093,
             lng: -115.267343,
           });
@@ -239,10 +246,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%", borderBottom: "solid #70757a" }}
         onClick={() => {
           setSelectedMarker("Tombstone");
-          props.setLastClickedLong(-114.973031);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-114.973031);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.675607,
             lng: -114.973031,
           });
@@ -254,10 +261,10 @@ export const SiteList = (props: siteListProps) => {
         style={{ padding: "4%" }}
         onClick={() => {
           setSelectedMarker("Turbine Canyon");
-          props.setLastClickedLong(-115.275096);
-          props.setSiteMenuViz(false);
-          props.setSiteInfoPanelViz(true);
-          props.setZoomToSiteCoord({
+          setLastClickedLong(-115.275096);
+          setSiteMenuViz(false);
+          setSiteInfoPanelViz(true);
+          setZoomToSiteCoord({
             lat: 50.686718,
             lng: -115.275096,
           });

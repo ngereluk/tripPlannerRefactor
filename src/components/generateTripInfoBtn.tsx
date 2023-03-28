@@ -1,19 +1,16 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { GeoJSONProps } from "react-leaflet";
 import { api } from "~/utils/api";
 import { tripCoordObj, SegmentData } from "../types";
-import { NameAndCoordinates } from "../types";
 var _ = require("lodash");
 
 interface generateTripInfoProps {
   geojsonObjects: GeoJSONProps["data"][];
   setTripCoordWithBool: Dispatch<SetStateAction<tripCoordObj[]>>;
   setSegmentCoordinates: Dispatch<SetStateAction<SegmentData[]>>;
-  sestTripInfoViz: Dispatch<SetStateAction<boolean>>;
-  tripCoordWithBool: tripCoordObj[];
-  segmentCoordinates: SegmentData[];
+  setTripInfoViz: Dispatch<SetStateAction<boolean>>;
   setTripInfoTitleViz: Dispatch<SetStateAction<boolean>>;
-  sestTripForecastViz: Dispatch<SetStateAction<boolean>>;
+  setTripForecastViz: Dispatch<SetStateAction<boolean>>;
   setSiteInfoPanelViz: Dispatch<SetStateAction<boolean>>;
   setSiteMenuViz: Dispatch<SetStateAction<boolean>>;
   setTripForecastTitleViz: Dispatch<SetStateAction<boolean>>;
@@ -23,8 +20,22 @@ interface generateTripInfoProps {
   setClearBtnViz: Dispatch<SetStateAction<boolean>>;
   setUserError: Dispatch<SetStateAction<string>>;
 }
-export const GenerateTripInfo = (props: generateTripInfoProps) => {
-  // const [markerNameJSON, setMarkerNameJSON] = useState<NameAndCoordinates[]>();
+export const GenerateTripInfo = ({
+  geojsonObjects,
+  setTripCoordWithBool,
+  setSegmentCoordinates,
+  setTripInfoViz,
+  setTripInfoTitleViz,
+  setTripForecastViz,
+  setSiteInfoPanelViz,
+  setSiteMenuViz,
+  setTripForecastTitleViz,
+  setClearTripBtnViz,
+  setGenrateTripBtnViz,
+  setUndoBtnViz,
+  setClearBtnViz,
+  setUserError,
+}: generateTripInfoProps) => {
   const {
     isLoading: siteDataIsLoading,
     isError: siteDataIsError,
@@ -43,27 +54,27 @@ export const GenerateTripInfo = (props: generateTripInfoProps) => {
     return res;
   }
 
-  async function getStaticMarkerName() {
+  async function getStaticMarkerNameAndCoord() {
     const res = await getMarkers();
     const data = res.MarkerNamesAndCoord;
-    //setMarkerNameJSON(data);
     return data;
   }
 
   async function generateTripInfo() {
-    props.setSiteMenuViz(false);
-    props.setSiteInfoPanelViz(false);
-    //////////////////////////////////////
-    //get campsite names
+    //hide the menu with the list of campsites
+    setSiteMenuViz(false);
+    setSiteInfoPanelViz(false);
+
+    //get campsite names and corresponding coordinates
     let inputCoordWithCampsiteBool = [] as tripCoordObj[];
 
-    const markerNameJSON = await getStaticMarkerName();
-    console.log("markerNameJSON ", markerNameJSON);
-    if (markerNameJSON !== undefined) {
+    const markerNameJSON = await getStaticMarkerNameAndCoord();
+    if (markerNameJSON !== undefined && geojsonObjects[0] !== undefined) {
+      //compare the inpute coordinates of each marker (inside geojsonObjects) to the master list of site names and coordinates
+      //to find the names for each site. Also add an isTrailhead bool set to false which will be properly initiallized in the next step
       //@ts-ignore
-      for (let coord of props.geojsonObjects[0].metadata.query.coordinates) {
+      for (let coord of geojsonObjects[0].metadata.query.coordinates) {
         const markerNameObj = markerNameJSON.find(
-          //@ts-ignore
           (markerNameStaticObj) =>
             markerNameStaticObj.coordinates[0] === coord[0] &&
             markerNameStaticObj.coordinates[1] === coord[1]
@@ -77,7 +88,7 @@ export const GenerateTripInfo = (props: generateTripInfoProps) => {
         }
       }
     }
-    ///////////////////////////////////////////
+    //the master list of the coordinates of all trailheads
     const trailHeadCoordinates = [
       [-115.35449, 50.868806],
       [-114.869912, 50.789153],
@@ -88,38 +99,52 @@ export const GenerateTripInfo = (props: generateTripInfoProps) => {
       [-115.176086, 50.861035],
       [-115.141244, 50.631716],
     ];
+    //the coordinates of all markers clicked by the user
     const tripInputCoordinates =
       //@ts-ignore
-      props.geojsonObjects[0].metadata.query.coordinates;
+      geojsonObjects[0].metadata.query.coordinates;
 
+    //pull out the starting and ending points
     const startingPoint = tripInputCoordinates[0];
     const endingPoint = tripInputCoordinates[tripInputCoordinates.length - 1];
 
+    //the trip must start and end at a trail head -check the start and enpoint to see if they are in the master trailHeadCoordinates list
     const startingPointIsTrailHead = _.findIndex(
       trailHeadCoordinates,
-      function (el: any) {
+      function (el: number[]) {
         return el[0] == startingPoint[0] && el[1] == startingPoint[1];
       }
     );
 
     const endPointIsTrailHead = _.findIndex(
       trailHeadCoordinates,
-      function (el: any) {
+      function (el: number[]) {
         return el[0] == endingPoint[0] && el[1] == endingPoint[1];
       }
     );
 
     if (startingPointIsTrailHead !== -1 && endPointIsTrailHead !== -1) {
+      // if (
+      //   inputCoordWithCampsiteBool.indexOf(coordinateObj) !== 0 &&
+      //   inputCoordWithCampsiteBool.indexOf(coordinateObj) !==
+      //     inputCoordWithCampsiteBool.length - 1
+      // ) {
+      //   inputCoordWithCampsiteBool.splice(
+      //     inputCoordWithCampsiteBool.indexOf(coordinateObj),
+      //     1
+      //   );
+      // }
+
       //if they have started and ended their route at a trail head, the trip plan can be created
       for (let coordinateObj of tripInputCoordinates) {
         if (
-          _.findIndex(trailHeadCoordinates, function (el: any) {
+          _.findIndex(trailHeadCoordinates, function (el: number[]) {
             return el[0] == coordinateObj[0] && el[1] == coordinateObj[1];
           }) !== -1
         ) {
           let objIndex = _.findIndex(
             inputCoordWithCampsiteBool,
-            function (el: any) {
+            function (el: tripCoordObj) {
               return (
                 el.coordinate[0] == coordinateObj[0] &&
                 el.coordinate[1] == coordinateObj[1]
@@ -130,42 +155,45 @@ export const GenerateTripInfo = (props: generateTripInfoProps) => {
           inputCoordWithCampsiteBool[objIndex].isTrailHead = true;
         }
       }
-      props.setTripCoordWithBool(inputCoordWithCampsiteBool);
+
+      setTripCoordWithBool(inputCoordWithCampsiteBool);
     }
+    //if the trip dosent start and end with a trailhead, display error to user and hide
+    //the generate trip button
     if (startingPointIsTrailHead === -1 || endPointIsTrailHead === -1) {
-      props.setUserError("Your trip must start and end at a trail head.");
-      props.setGenrateTripBtnViz(false);
+      setUserError("Your trip must start and end at a trail head.");
+      setGenrateTripBtnViz(false);
       return;
     }
     //pair up coords to get segment data
-    /// CHANGE TO IGNORE INTER ROUTE TRAILHEADS
     let dailyTotals = [] as SegmentData[];
-
     for (let coordinate of tripInputCoordinates.slice(0, -1)) {
-      const coordinatePair = [
-        coordinate,
-        tripInputCoordinates[
-          _.findIndex(tripInputCoordinates, function (el: any) {
-            return el[0] == coordinate[0] && el[1] == coordinate[1];
-          }) + 1
-        ],
-      ];
+      if (coordinate) {
+        const coordinatePair = [
+          coordinate,
+          tripInputCoordinates[
+            _.findIndex(tripInputCoordinates, function (el: number[]) {
+              return el[0] == coordinate[0] && el[1] == coordinate[1];
+            }) + 1
+          ],
+        ];
 
-      const staticData = await getStaticRouteData(coordinatePair);
+        const staticData = await getStaticRouteData(coordinatePair);
 
-      dailyTotals.push(staticData);
+        dailyTotals.push(staticData);
+      }
     }
-    props.setSegmentCoordinates(dailyTotals);
-    props.sestTripInfoViz(true);
-    props.setTripInfoTitleViz(true);
-    props.sestTripForecastViz(true);
-    props.setTripForecastTitleViz(true);
-    props.setClearTripBtnViz(true);
-    props.setGenrateTripBtnViz(false);
-    props.setUndoBtnViz(false);
-    props.setClearBtnViz(false);
-    /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
+    //once the trip info is generated, show the trip info, forecast components and their corresponding tittles (which act as toggles)
+    //and hide the generate trip info, undo and clear btns
+    setSegmentCoordinates(dailyTotals);
+    setTripInfoViz(true);
+    setTripInfoTitleViz(true);
+    setTripForecastViz(true);
+    setTripForecastTitleViz(true);
+    setClearTripBtnViz(true);
+    setGenrateTripBtnViz(false);
+    setUndoBtnViz(false);
+    setClearBtnViz(false);
   }
   return (
     <div
@@ -174,23 +202,10 @@ export const GenerateTripInfo = (props: generateTripInfoProps) => {
         justifyContent: "center",
         alignItems: "center",
         color: "black",
-        // backgroundColor: tripInfoBtnBkrnd,
         whiteSpace: "nowrap",
-        // paddingTop: "10%",
-        //paddingBottom: "10%",
-        // paddingLeft: "13%",
-        //paddingRight: "13%",
-
         cursor: "pointer",
         fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
-        // borderRadius: "25px",
-        // boxShadow:
-        //   "0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
-        // height: "100%",
-        //width: "18vh",
       }}
-      // onMouseEnter={() => setTripInfoBtnBkrnd("grey")}
-      // onMouseLeave={() => setTripInfoBtnBkrnd("white")}
       onClick={generateTripInfo}
     >
       {" "}

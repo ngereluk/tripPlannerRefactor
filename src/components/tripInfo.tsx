@@ -1,44 +1,50 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { tripCoordObj, SegmentData, ItineraryObj } from "../types";
+import { useEffect, useState } from "react";
+import { tripCoordObj, SegmentData, TripInfoObj } from "../types";
 
 export interface tripInfoProps {
   tripCoordWithBool: tripCoordObj[];
   segmentCoordinates: SegmentData[];
   tripInfoViz: boolean;
-  sestTripInfoViz: Dispatch<SetStateAction<boolean>>;
 }
 
-export const TripInfo = (props: tripInfoProps) => {
-  const [tripData, setTripData] = useState<any[]>([]);
+export const TripInfo = ({
+  tripCoordWithBool,
+  segmentCoordinates,
+  tripInfoViz,
+}: tripInfoProps) => {
+  const [tripData, setTripData] = useState<TripInfoObj[]>([]);
   const numberOfDays = tripData.filter(
     (item) => item.isTrailHead === undefined
   ).length;
   let numDaysCounter = 1;
-  function mergeArrays(markerArray: any, segmentArray: any) {
+  function mergeArrays(
+    markerArray: TripInfoObj[],
+    segmentArray: TripInfoObj[]
+  ) {
     const result = (
       markerArray.length > segmentArray.length ? markerArray : segmentArray
     )
-      .map((_: any, i: any) => [markerArray[i], segmentArray[i]])
+      .map((_: TripInfoObj, i: number) => [markerArray[i], segmentArray[i]])
       .flat()
       .filter(Boolean);
 
     return result;
   }
   function configureTripInfo() {
-    const markerArray = props.tripCoordWithBool;
-    const segmentArray = props.segmentCoordinates;
+    const markerArray = tripCoordWithBool;
+    const segmentArray = segmentCoordinates;
     const mergedArray = mergeArrays(markerArray, segmentArray);
     return mergedArray;
   }
 
   useEffect(() => {
-    const data = configureTripInfo();
+    const data = configureTripInfo() as TripInfoObj[];
     setTripData(data);
     for (let item of tripData) {
     }
-  }, [props.tripInfoViz]);
+  }, [tripInfoViz]);
   {
-    if (props.tripInfoViz === true) {
+    if (tripInfoViz === true) {
       return (
         <div
           style={{
@@ -73,7 +79,7 @@ export const TripInfo = (props: tripInfoProps) => {
                   </div>
                 );
               }
-              if (index === 1) {
+              if (index === 1 && dataItem.segmentLength) {
                 return (
                   <div>
                     <div
@@ -114,7 +120,7 @@ export const TripInfo = (props: tripInfoProps) => {
                 );
               }
 
-              if (index === tripData.length - 2) {
+              if (index === tripData.length - 2 && dataItem.segmentLength) {
                 return (
                   <div
                     style={{
@@ -203,7 +209,7 @@ export const TripInfo = (props: tripInfoProps) => {
                       </div>
                     </div>
                   );
-                } else {
+                } else if (dataItem.segmentLength !== undefined) {
                   numDaysCounter = numDaysCounter + 1;
 
                   return (

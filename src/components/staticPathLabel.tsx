@@ -1,19 +1,20 @@
-import { isPropertySignature } from "typescript";
-
 interface staticPathLabelProps {
   segmentLengthOpacity: string;
   distance: number;
 }
-export const StaticPathLabel = (props: staticPathLabelProps) => {
+export const StaticPathLabel = ({
+  segmentLengthOpacity,
+  distance,
+}: staticPathLabelProps) => {
   return (
     <div
       style={{
         backgroundColor: "black !important",
-        display: props.segmentLengthOpacity,
+        display: segmentLengthOpacity,
         fontWeight: "bold",
       }}
     >
-      {(props.distance / 1000).toFixed(2) + " km"}
+      {(distance / 1000).toFixed(2) + " km"}
     </div>
   );
 };

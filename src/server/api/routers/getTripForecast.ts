@@ -39,8 +39,8 @@ export const getTripForecast = createTRPCRouter({
   getData: publicProcedure
     .input(
       z.object({
-        trailHeadLong: z.string(),
-        trailHeadLat: z.string(),
+        trailHeadLong: z.string().optional(),
+        trailHeadLat: z.string().optional(),
         formattedStartDate: z.string(),
         formattedEndDate: z.string(),
       })
