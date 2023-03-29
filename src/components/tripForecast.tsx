@@ -55,7 +55,7 @@ export const TripForecast = ({
         display: tripForecastViz === true ? "block" : "none",
         overflowY: "auto",
         height: forecastHeight,
-        scrollbarColor: "black !important",
+        fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
       }}
     >
       <div

@@ -1,11 +1,12 @@
 import { MapContainer, GeoJSONProps } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { RightHandMenu } from "./rightHandMenu";
 import { tripCoordObj, SegmentData, Forecast } from "../types";
 import MapLegend from "./mapLegend";
 import MapTopMenu from "./mapTopMenu";
 import KananaskisMap from "../components/kananaskisMap";
+import LoadingMsg from "../components/loadingMsg";
 
 interface myMapContainerProps {
   geojsonObjects: GeoJSONProps["data"][];
@@ -48,6 +49,23 @@ const MyMapContainer = ({
   const [siteMenuViz, setSiteMenuViz] = useState(true);
   const [userError, setUserError] = useState("");
   const [tripForecast, setTripForecast] = useState<Forecast>();
+  const [tripInfoIsLoading, setTripInfoIsLoading] = useState<boolean>(false);
+  const [tripInfoLoadingError, setTripInfoLoadingError] =
+    useState<boolean>(false);
+  const [routeDataLoading, setRouteDataLoading] = useState<boolean>(false);
+  const [routeDataError, setRouteDataError] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (tripInfoLoadingError) {
+      setUserError("Failed to load data. Please refresh the page.");
+    }
+  }, [tripInfoLoadingError]);
+
+  useEffect(() => {
+    if (routeDataError) {
+      setUserError("Failed to load data. Please refresh the page.");
+    }
+  }, [routeDataError]);
 
   return (
     <MapContainer
@@ -123,6 +141,26 @@ const MyMapContainer = ({
       </div>
       <div
         style={{
+          display: routeDataLoading ? "block" : "none",
+          position: "absolute",
+          zIndex: "10002",
+          backgroundColor: "white",
+          padding: "5%",
+          left: "40%",
+          top: "30%",
+          width: "20%",
+          borderRadius: "25px",
+          boxShadow:
+            "0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
+          alignItems: "flex-start",
+          justifyContent: "flex-end",
+          cursor: "pointer",
+        }}
+      >
+        <LoadingMsg />
+      </div>
+      <div
+        style={{
           position: "absolute",
           display: "flex",
           flexDirection: "row",
@@ -155,6 +193,7 @@ const MyMapContainer = ({
             tripForecastTitleViz={tripForecastTitleViz}
             tripForecast={tripForecast}
             setTripForecast={setTripForecast}
+            tripInfoIsLoading={tripInfoIsLoading}
           />
         </div>
         <KananaskisMap
@@ -165,6 +204,8 @@ const MyMapContainer = ({
           setCoordinatesArray={setCoordinatesArray}
           lastClickedLong={lastClickedLong}
           setLastClickedLong={setLastClickedLong}
+          setRouteDataLoading={setRouteDataLoading}
+          setRouteDataError={setRouteDataError}
         />
       </div>
       <div
@@ -204,6 +245,9 @@ const MyMapContainer = ({
             setSiteMenuViz={setSiteMenuViz}
             setUserError={setUserError}
             setTripForecast={setTripForecast}
+            setTripInfoIsLoading={setTripInfoIsLoading}
+            setTripInfoLoadingError={setTripInfoLoadingError}
+            setZoomToSiteCoord={setZoomToSiteCoord}
           />
         </div>{" "}
       </div>

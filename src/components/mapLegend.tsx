@@ -1,7 +1,19 @@
 export const MapLegend = () => {
   return (
-    <div style={{ paddingRight: "4%", paddingLeft: "4%" }}>
-      <div style={{ color: "black", fontWeight: "bold", fontSize: "16px" }}>
+    <div
+      style={{
+        paddingRight: "4%",
+        paddingLeft: "4%",
+        fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
+      }}
+    >
+      <div
+        style={{
+          color: "black",
+          fontWeight: "bold",
+          fontSize: "0.8rem",
+        }}
+      >
         Legend
       </div>
       <div
@@ -22,7 +34,7 @@ export const MapLegend = () => {
             src="/blueMapMarker.svg"
             style={{ height: "2vh", paddingRight: "3%" }}
           />
-          <div style={{ color: "black", fontSize: "14px" }}>
+          <div style={{ color: "black", fontSize: "0.8rem" }}>
             Backcountry Campsite
           </div>
         </div>
@@ -37,7 +49,7 @@ export const MapLegend = () => {
             src="/greenMapMarker.svg"
             style={{ height: "2vh", paddingRight: "3%" }}
           />
-          <div style={{ color: "black", fontSize: "14px" }}>
+          <div style={{ color: "black", fontSize: "0.8rem" }}>
             Trailhead/Parking
           </div>
         </div>
@@ -52,7 +64,7 @@ export const MapLegend = () => {
             src="/redMapMarker.svg"
             style={{ height: "2vh", paddingRight: "3%" }}
           />
-          <div style={{ color: "black", fontSize: "14px" }}>
+          <div style={{ color: "black", fontSize: "0.8rem" }}>
             Most Recently Clicked Marker
           </div>
         </div>

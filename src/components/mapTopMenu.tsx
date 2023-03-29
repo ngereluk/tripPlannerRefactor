@@ -29,6 +29,14 @@ export interface mapTopMenuProps {
   setSiteMenuViz: Dispatch<SetStateAction<boolean>>;
   setUserError: Dispatch<SetStateAction<string>>;
   setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
+  setTripInfoIsLoading: Dispatch<SetStateAction<boolean>>;
+  setTripInfoLoadingError: Dispatch<SetStateAction<boolean>>;
+  setZoomToSiteCoord: Dispatch<
+    SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
 }
 
 export const MapTopMenu = ({
@@ -47,6 +55,9 @@ export const MapTopMenu = ({
   setSiteMenuViz,
   setUserError,
   setTripForecast,
+  setTripInfoIsLoading,
+  setTripInfoLoadingError,
+  setZoomToSiteCoord,
 }: mapTopMenuProps) => {
   const [generateTripBtnViz, setGenrateTripBtnViz] = useState(false);
   const [clearTripBtnViz, setClearTripBtnViz] = useState(false);
@@ -81,6 +92,10 @@ export const MapTopMenu = ({
     setLastClickedLong(0);
     setTripForecast(undefined);
     setSiteMenuViz(true);
+    setZoomToSiteCoord({
+      lat: 50.814061,
+      lng: -115.163614,
+    });
   }
 
   function undo() {
@@ -141,6 +156,8 @@ export const MapTopMenu = ({
           setUndoBtnViz={setUndoBtnViz}
           setClearBtnViz={setClearBtnViz}
           setUserError={setUserError}
+          setTripInfoIsLoading={setTripInfoIsLoading}
+          setTripInfoLoadingError={setTripInfoLoadingError}
         />
       </div>
       <div
@@ -170,6 +187,7 @@ export const MapTopMenu = ({
           style={{
             fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
             color: "black",
+            fontSize: "0.8rem",
           }}
         >
           Start a New Trip
@@ -200,6 +218,7 @@ export const MapTopMenu = ({
           style={{
             fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
             color: "black",
+            fontSize: "0.8rem",
           }}
         >
           Undo Marker Click
@@ -232,6 +251,7 @@ export const MapTopMenu = ({
             padding: "2%",
             fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
             color: "black",
+            fontSize: "0.8rem",
           }}
         >
           Clear Path

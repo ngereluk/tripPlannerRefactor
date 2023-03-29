@@ -11,40 +11,19 @@ interface siteListProps {
     }>
   >;
   setSiteMenuViz: Dispatch<SetStateAction<boolean>>;
-  setSiteInfoPanelData: Dispatch<SetStateAction<SiteInfoPanelData>>;
   setSiteInfoPanelViz: Dispatch<SetStateAction<boolean>>;
   setLastClickedLong: Dispatch<SetStateAction<number>>;
+  setSelectedMarker: Dispatch<SetStateAction<string>>;
 }
 
 export const SiteList = ({
   siteMenuViz,
   setZoomToSiteCoord,
   setSiteMenuViz,
-  setSiteInfoPanelData,
   setSiteInfoPanelViz,
   setLastClickedLong,
+  setSelectedMarker,
 }: siteListProps) => {
-  const [selectedMarker, setSelectedMarker] = useState<string>("");
-  const {
-    isLoading: siteDataIsLoading,
-    isError: siteDataIsError,
-    isSuccess: siteDataIsSuccess,
-    mutateAsync,
-  } = api.getStaticMarkerInfo.getMarkerData.useMutation();
-
-  async function getStaticMarkerData() {
-    if (selectedMarker !== "") {
-      const res = await mutateAsync({
-        selectedMarker: selectedMarker,
-      });
-      setSiteInfoPanelData(res.markerData);
-    }
-  }
-
-  useEffect(() => {
-    getStaticMarkerData();
-  }, [selectedMarker]);
-
   return (
     <div
       style={{

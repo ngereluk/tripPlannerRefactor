@@ -51,6 +51,8 @@ interface kananaskisMapProps {
   >;
   lastClickedLong: number;
   setLastClickedLong: Dispatch<SetStateAction<number>>;
+  setRouteDataLoading: Dispatch<SetStateAction<boolean>>;
+  setRouteDataError: Dispatch<SetStateAction<boolean>>;
 }
 
 export const KananaskisMap = ({
@@ -61,21 +63,22 @@ export const KananaskisMap = ({
   setCoordinatesArray,
   lastClickedLong,
   setLastClickedLong,
+  setRouteDataLoading,
+  setRouteDataError,
 }: kananaskisMapProps) => {
   const [isCampsite, setIsCampsite] = useState(true);
   const [segmentLengthOpacity, setSegmentLengthOpacity] = useState("none");
   const {
     data: staticRouteData,
-    isLoading,
-    isError,
-    isSuccess,
+    isLoading: staticRouteDataIsLoading,
+    isError: staticRouteDataIsError,
+    // isSuccess,
   } = api.getStaticRouteData.getData.useQuery();
-  //if is loading
-  //if is error
+
   const {
-    isLoading: orsIsLoading,
-    isError: orsIsError,
-    isSuccess: orsIsSuccess,
+    //  isLoading: orsIsLoading,
+    // isError: orsIsError,
+    //isSuccess: orsIsSuccess,
     mutateAsync,
   } = api.openRouteService.getRouteData.useMutation();
 
@@ -87,6 +90,23 @@ export const KananaskisMap = ({
       setGeojsonObjects([res.geojsonObject]);
     }
   }
+
+  useEffect(() => {
+    if (staticRouteDataIsLoading) {
+      setRouteDataLoading(true);
+    }
+    if (!staticRouteDataIsLoading) {
+      setRouteDataLoading(false);
+    }
+  }, [staticRouteDataIsLoading]);
+  useEffect(() => {
+    if (staticRouteDataIsError) {
+      setRouteDataError(true);
+    }
+    if (!staticRouteDataIsError) {
+      setRouteDataError(false);
+    }
+  }, [staticRouteDataIsError]);
 
   useEffect(() => {
     if (coordinatesArray.length > 1) {
@@ -151,7 +171,7 @@ export const KananaskisMap = ({
       }
       {/* el for static generated routes */}
       {staticRouteData &&
-        staticRouteData.StaticRouteData.map((data, i) => {
+        staticRouteData.StaticRouteData.map((data) => {
           return (
             <GeoJSON
               key={JSON.stringify(data)}

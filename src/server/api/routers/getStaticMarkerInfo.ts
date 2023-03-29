@@ -12,7 +12,6 @@ export const getStaticMarkerInfo = createTRPCRouter({
       const markerData = StaticSiteInfo.filter(
         (markerInfo) => markerInfo.name === input.selectedMarker
       );
-      console.log("markerData ", markerData);
       return {
         markerData: markerData[0] as SiteInfoPanelData,
       };

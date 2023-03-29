@@ -2,7 +2,7 @@ export const StaticSiteInfo = [
   {
     name: "Aster Lake",
     noSites: 5,
-    coordinates: "",
+    coordinates: [50.580097, -115.20417],
     park: "Peter Lougheed Provincial Park",
     description:
       "Aster Lake Backcountry Campground is in Peter Lougheed Provincial Park, 50 km south of Hwy. 1 on Hwy. 40 and south on Kananaskis Lakes Trail. The closest access is at the Upper Lake Day Use Area. It is 10.8 km from the trailhead via Upper Kananaskis Lake Circuit/Aster Lake Route Trail. This idyllic spot is accessed via an unmaintained trail so is only suitable for experienced hikers, prepared to route find and fend for themselves. No fires are permitted. There are pit/vault toilets and secure food storage lockers. This trail is 10.8 km one way with 550 metres of elevation gain and is rated hard.",
@@ -40,7 +40,7 @@ export const StaticSiteInfo = [
   {
     name: "Elbow Lake",
     noSites: 15,
-    coordinates: "",
+    coordinates: [50.637443, -115.009242],
     park: "Peter Lougheed Provincial Park",
     description:
       "Elbow Lake Backcountry Campground is in Peter Lougheed Provincial Park, 75 km south of Hwy. 1 on Hwy. 40. The closest access is at Elbow Pass Day Use Area. It is 1.3 km from the trailhead via Elbow Lake Trail. There are around 15 tenting pads in the forest along the emerald green lake. Here there are pit/vault toilets, and secure food storage lockers. This trail is 1.3km one way with 125 meters of elevation gain and is rated easy. Note: Please note that it is illegal to remove, deface, injure or destroy trees and using dead wood lying on the ground for firewood is also prohibited.",
@@ -59,7 +59,7 @@ export const StaticSiteInfo = [
   {
     name: "Forks",
     noSites: 20,
-    coordinates: "",
+    coordinates: [50.634741, -115.232454],
     park: "Peter Lougheed Provincial Park",
     description:
       "Forks Backcountry Campground is in Peter Lougheed Provincial Park, 50 km south of Hwy. 1 on Hwy. 40 and south on Kananaskis Lakes Trail. The closest access is at North Interlakes Day Use Area. It is 7.3 km from the trailhead via Upper Kananaskis Lake Circuit/Three Isle Lake Trail. About 15 tent sites are nestled in the forest at this lovely creekside campground. Here there are pit/vault toilets, and secure food storage lockers. This trail is 7.3 km one way with 100 meters of elevation gain and is rated easy. Note: Please note that it is illegal to remove, deface, injure or destroy trees and using dead wood lying on the ground for firewood is also prohibited.",
@@ -78,7 +78,7 @@ export const StaticSiteInfo = [
   {
     name: "Point",
     noSites: 20,
-    coordinates: "",
+    coordinates: [50.627449, -115.178892],
     park: "Peter Lougheed Provincial Park",
     description:
       "Point Backcountry Campground is in Peter Lougheed Provincial Park, 50 km south of Hwy. 1 on Hwy 40 and south on Kananaskis Lakes Trail. The closest access is at North Interlakes Day Use. It is 3.4 km from the trailhead via Upper Kananaskis Lake Circuit. It can also be accessed by boat, but there are no docking or mooring facilities so light watercraft can be pulled up on shore. Enjoy beautiful lake and mountain views at this scenic site. Tent sites are scattered amongst the forest at the lake's edge. There are pit/vault toilets and secure food storage lockers here. This trail is 3.4 km one way with 25 m and is rated easy. Note: Please note that it is illegal to remove, deface, injure or destroy trees and using dead wood lying on the ground for firewood is also prohibited.",
@@ -97,7 +97,7 @@ export const StaticSiteInfo = [
   {
     name: "Three Isle Lake",
     noSites: 16,
-    coordinates: "",
+    coordinates: [50.630093, -115.267343],
     park: "Peter Lougheed Provincial Park",
     description:
       "The most direct access for the Three Isle Backcountry Campground in Peter Lougheed Provincial Park, is via North Interlakes Day Use.  The campground is 10.3 km from the day use via Upper Kananaskis Lake Circuit/Three Isle Lake Trail.   The tent sites are scattered in two separate loops; the first located amongst the trees above the lake and the second, 0.5 kilometres along the lake shore on the opposite side of the creek. Enjoy beautiful lake and mountain views at these scenic sites. No fires permitted. There are pit/vault toilets and secure food storage lockers here.",
@@ -116,7 +116,7 @@ export const StaticSiteInfo = [
   {
     name: "Turbine Canyon",
     noSites: 15,
-    coordinates: "",
+    coordinates: [50.686718, -115.275096],
     park: "Peter Lougheed Provincial Park",
     description:
       "The most direct access to Turbine Canyon Backcountry Campground in Peter Lougheed Provincial Park, is via North Interlakes Day Use. The backcountry campground is located 15.1 km from the trailhead via the Upper Kananaskis Lake Circuit, Three Isle Lake and Maude-Lawson Trails and the elevation gain totals 525 metres.  Enjoy beautiful mountain views, streams and meadows on the way to this scenic location. Tent sites are nestled in the forest north of Maude Brook. There are pit/vault toilets and secure food storage lockers but no fires permitted.",
@@ -135,7 +135,7 @@ export const StaticSiteInfo = [
   {
     name: "Ribbon Falls",
     noSites: 10,
-    coordinates: "",
+    coordinates: [50.892203, -115.229125],
     park: "Spray Valley Provincial Park",
     description:
       "Ribbon Falls Backcountry Campground is in Spray Valley Provincial Park. The closest access is at Ribbon Creek Day Use Area in Evan-Thomas Provincial Recreation Area, 24 km south of Hwy. 1 off Hwy. 40. Enjoy the beauty of your surroundings on your way to this scenic spot. There are tent sites, pit/vault toilets and secure food storage facilities here. This trail is 9.1 km one way with 375 meters of elevation gain and is rated moderate-hard. Please note that it is illegal to remove, deface, injure or destroy trees. Using dead wood lying on the ground for firewood is also prohibited.",
@@ -154,7 +154,7 @@ export const StaticSiteInfo = [
   {
     name: "Ribbon Lake",
     noSites: 20,
-    coordinates: "",
+    coordinates: [50.886506, -115.248081],
     park: "Spray Valley Provincial Park",
     description:
       "Ribbon Lake Backcountry Campground is in Spray Valley Provincial Park. There are several different ways to access it, including trail heads at Buller Mountain Day Use, Galatea Day Use, and Ribbon Creek Day Use. Note that there is a very steep section of trail with chains to aid climbing between Ribbon Falls and Ribbon Lake. Ribbon Lake is a gem tucked away in the heart of Spray Valley. Enjoy the peace and tranquility at this site. Here there are tent pads, pit/vault toilets and secure food storage lockers. This trail from Ribbon Creek Day Use is 10 km one way with 625 meters of elevation gain and is rated hard. Secondary access from Galatea Creek Trail/ Guinn's Pass Trail/ from Galatea Day Use is 9.4 km and 870 m of elevation gain. Tertiary access via Buller Pass Trail from Buller Mountain Day Use is 9.2 km and 670 m of elevation gain. Please note that it is illegal to remove, deface, injure or destroy trees. Using dead wood lying on the ground for firewood is also prohibited.",
@@ -172,7 +172,7 @@ export const StaticSiteInfo = [
   {
     name: "Quaite Valley",
     noSites: 20,
-    coordinates: "",
+    coordinates: [51.053327, -115.11447],
     park: "Bow Valley WPP",
     description:
       "This backcountry campground is found in Bow Valley Wildland Provincial Park. It can be accessed via the Quaite Valley Trail, which starts at the Heart Creek Day Use Area about 18 km east of Canmore on Hwy. 1. The campground is about 4.5 km from the trailhead. There are 20 tenting sites, with group firepits (firewood provided), pit/vault toilets, and secure food storage lockers available. Secondary access from Barrier Dam Day Use Area and is 8.6 km and 240 m of elevation. This trail is 4.7 km one way with 100 meters of elevation gain and is rated easy.",
@@ -191,7 +191,7 @@ export const StaticSiteInfo = [
   {
     name: "Jewel Bay",
     noSites: 7,
-    coordinates: "",
+    coordinates: [51.023576, -115.082083],
     park: "Bow Valley Provincial Park",
     description:
       "This scenic backcountry equestrian campground is found in Bow Valley Provincial Park on the northwest shore of Barrier Lake. The closest access is at the Barrier Dam Day Use Area, 30 km east of Canmore on Hwy. 1 and 12 km south on Hwy. 40. It is 3.9 km km from the trailhead and is rated easy. It can also be reached by boat. Here there are tent pads, hitching rails, corrals, pit/vault toilets, secure food storage lockers and firewood provided. Secondary access via Quaite Creek Trail/ Jewell Pass Trail from Heart Creek Day Use Area is 9.4 km and 340 m of elevation.",
@@ -212,7 +212,7 @@ export const StaticSiteInfo = [
   {
     name: "Big Elbow",
     noSites: 7,
-    coordinates: "",
+    coordinates: [50.723768, -114.859643],
     park: "Big Elbow Provincial Recreation Area",
     description:
       "This equestrian back country campground is found in Big Elbow Provincial Recreation Area. The trail head to access this site is in Little Elbow Provincial Recreation Area, 32 km southwest of Bragg Creek on Hwy. 66 (closed Dec. - May). It is located approximately 8.3 km from the Little Elbow Campground on the east half of the Elbow Loop. There are fire pits (firewood provided), hitching rails, pit/vault toilets, and secure food storage containers.  This trail is 8.3km one way with 811 meters of elevation gain and is rated moderate. ",
@@ -233,7 +233,7 @@ export const StaticSiteInfo = [
   {
     name: "Tombstone",
     noSites: 11,
-    coordinates: "",
+    coordinates: [50.675607, -114.973031],
     park: "Elbow-Sheep Wildland Provincial Park",
     description:
       "Tombstone Backcountry Campground is found in Elbow-Sheep Wildland Provincial Park. The campground is 7.3 from the trailhead via Elbow Lake Trail/Big Elbow Trail. This equestrian campground has tent sites, firepits (firewood provided), hitching rails, pit/vault toilets and secure food storage lockers. SECONDARY: 30.7km via Big Elbow Trail/Little Elbow Trail from Little Elbow Trailhead Parking (650m elevation). This trail is 7.3 km one way with 125 meters of elevation gain and is rated moderate.",
@@ -254,7 +254,7 @@ export const StaticSiteInfo = [
   {
     name: "Mount Romulus",
     noSites: 10,
-    coordinates: "",
+    coordinates: [50.76182, -114.98882],
     park: "Elbow-Sheep Wildland Provincial Park",
     description:
       "Mount Romulus Backcountry Campground is located in Elbow-Sheep Wildland Provincial Park. PRIMARY: 11.9km with 175 meters of elevation gain via Little Elbow Trail from Little Elbow Trailhead Parking (175m elevation); SECONDARY: 30.7km via Big Elbow Trail/Little Elbow Trail from Little Elbow Trailhead Parking (650m elevation). There are tent pads here, fire pits (firewood provided), hitching rails, pit/vault toilets, and secure food storage lockers. ",

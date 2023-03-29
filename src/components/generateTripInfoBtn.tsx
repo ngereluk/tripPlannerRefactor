@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { GeoJSONProps } from "react-leaflet";
 import { api } from "~/utils/api";
 import { tripCoordObj, SegmentData } from "../types";
@@ -19,6 +19,8 @@ interface generateTripInfoProps {
   setUndoBtnViz: Dispatch<SetStateAction<boolean>>;
   setClearBtnViz: Dispatch<SetStateAction<boolean>>;
   setUserError: Dispatch<SetStateAction<string>>;
+  setTripInfoIsLoading: Dispatch<SetStateAction<boolean>>;
+  setTripInfoLoadingError: Dispatch<SetStateAction<boolean>>;
 }
 export const GenerateTripInfo = ({
   geojsonObjects,
@@ -35,17 +37,15 @@ export const GenerateTripInfo = ({
   setUndoBtnViz,
   setClearBtnViz,
   setUserError,
+  setTripInfoIsLoading,
+  setTripInfoLoadingError,
 }: generateTripInfoProps) => {
-  const {
-    isLoading: siteDataIsLoading,
-    isError: siteDataIsError,
-    isSuccess: siteDataIsSuccess,
-    mutateAsync: getMarkers,
-  } = api.getStaticMarkerName.getData.useMutation();
+  const { mutateAsync: getMarkers } =
+    api.getStaticMarkerName.getData.useMutation();
   const {
     isLoading: routeDataIsLoading,
     isError: routeDataIsError,
-    isSuccess: routeDataIsSuccess,
+    //    isSuccess: routeDataIsSuccess,
     mutateAsync: getRouteData,
   } = api.getRouteDataForTrip.getData.useMutation();
 
@@ -60,9 +60,26 @@ export const GenerateTripInfo = ({
     return data;
   }
 
+  useEffect(() => {
+    if (routeDataIsLoading) {
+      setTripInfoIsLoading(true);
+    }
+    if (!routeDataIsLoading) {
+      setTripInfoIsLoading(false);
+    }
+  }, [routeDataIsLoading]);
+
+  useEffect(() => {
+    if (routeDataIsError) {
+      setTripInfoLoadingError(true);
+    }
+    if (!routeDataIsError) {
+      setTripInfoLoadingError(false);
+    }
+  }, [routeDataIsError]);
+
   async function generateTripInfo() {
     //hide the menu with the list of campsites
-    setSiteMenuViz(false);
     setSiteInfoPanelViz(false);
 
     //get campsite names and corresponding coordinates
@@ -124,17 +141,6 @@ export const GenerateTripInfo = ({
     );
 
     if (startingPointIsTrailHead !== -1 && endPointIsTrailHead !== -1) {
-      // if (
-      //   inputCoordWithCampsiteBool.indexOf(coordinateObj) !== 0 &&
-      //   inputCoordWithCampsiteBool.indexOf(coordinateObj) !==
-      //     inputCoordWithCampsiteBool.length - 1
-      // ) {
-      //   inputCoordWithCampsiteBool.splice(
-      //     inputCoordWithCampsiteBool.indexOf(coordinateObj),
-      //     1
-      //   );
-      // }
-
       //if they have started and ended their route at a trail head, the trip plan can be created
       for (let coordinateObj of tripInputCoordinates) {
         if (
@@ -163,6 +169,7 @@ export const GenerateTripInfo = ({
     if (startingPointIsTrailHead === -1 || endPointIsTrailHead === -1) {
       setUserError("Your trip must start and end at a trail head.");
       setGenrateTripBtnViz(false);
+      setSiteMenuViz(true);
       return;
     }
     //pair up coords to get segment data
@@ -194,6 +201,7 @@ export const GenerateTripInfo = ({
     setGenrateTripBtnViz(false);
     setUndoBtnViz(false);
     setClearBtnViz(false);
+    setSiteMenuViz(false);
   }
   return (
     <div
@@ -211,7 +219,7 @@ export const GenerateTripInfo = ({
       {" "}
       <img
         src={"/generate.svg"}
-        style={{ height: "2.7vh", paddingRight: "1vh" }}
+        style={{ height: "2.7vh", paddingRight: "1vh", fontSize: "0.8rem" }}
       />
       Generate Itinerary
     </div>

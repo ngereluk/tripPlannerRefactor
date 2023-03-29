@@ -1,16 +1,62 @@
+import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
 import { SiteInfoPanelData } from "../types";
+import LoadingMsg from "../components/loadingMsg";
+import ErrorMsg from "../components/errrorMsg";
 
 interface siteInfoPanelProps {
-  siteInfoPanelData: SiteInfoPanelData;
   siteInfoPanelViz: boolean;
+  selectedMarker: string;
 }
 
 const SiteInfoPanel = ({
-  siteInfoPanelData,
   siteInfoPanelViz,
+  selectedMarker,
 }: siteInfoPanelProps) => {
+  const [siteInfoPanelData, setSiteInfoPanelData] = useState<SiteInfoPanelData>(
+    {
+      name: "",
+      noSites: 0,
+      coordinates: "",
+      park: "",
+      description: "",
+      imageUrl: "",
+      waterSource: "",
+      amenities: [],
+      isCampsite: true,
+      linkToGovtSite: "",
+    }
+  );
+  const {
+    isLoading: siteDataIsLoading,
+    isError: siteDataIsError,
+    isSuccess: siteDataIsSuccess,
+    mutateAsync,
+  } = api.getStaticMarkerInfo.getMarkerData.useMutation();
+
+  useEffect(() => {
+    (async () => {
+      if (selectedMarker !== "") {
+        const res = await mutateAsync({
+          selectedMarker: selectedMarker,
+        });
+        setSiteInfoPanelData(res.markerData);
+      }
+    })();
+  }, [selectedMarker]);
+
   {
-    if (siteInfoPanelData.name != "" && siteInfoPanelViz === true) {
+    if (siteDataIsLoading) {
+      return <LoadingMsg />;
+    }
+    if (siteDataIsError) {
+      return <ErrorMsg />;
+    }
+    if (
+      siteInfoPanelData.name != "" &&
+      siteInfoPanelViz === true &&
+      siteDataIsSuccess
+    ) {
       return (
         <div
           style={{
@@ -92,18 +138,31 @@ const SiteInfoPanel = ({
                   src={amenity[0]}
                   style={{ maxHeight: "2vh", paddingRight: "8%" }}
                 />
-                <div>{amenity[1]}</div>
+                <div style={{ fontSize: "0.8rem" }}>{amenity[1]}</div>
               </div>
             ))}
           </div>
           <div style={{ padding: "5%" }}>
-            <div>Number of sites:{" " + siteInfoPanelData.noSites}</div>
-            <div>Water Source:{" " + siteInfoPanelData.waterSource}</div>
-            <div>Coordinates:{" " + siteInfoPanelData.coordinates}</div>
-            <a href={siteInfoPanelData.linkToGovtSite} target="_blank">
+            <div style={{ fontSize: "0.8rem" }}>
+              Number of sites:{" " + siteInfoPanelData.noSites}
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>
+              Water Source:{" " + siteInfoPanelData.waterSource}
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {" Lat: " +
+                siteInfoPanelData.coordinates[0] +
+                " Long: " +
+                siteInfoPanelData.coordinates[1]}
+            </div>
+            <a
+              href={siteInfoPanelData.linkToGovtSite}
+              target="_blank"
+              style={{ fontSize: "0.8rem" }}
+            >
               Link to Offical Information Page
             </a>
-            <div style={{ paddingTop: "3%" }}>
+            <div style={{ paddingTop: "3%", fontSize: "0.8rem" }}>
               {siteInfoPanelData.description}
             </div>
           </div>

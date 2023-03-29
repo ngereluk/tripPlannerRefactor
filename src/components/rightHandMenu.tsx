@@ -28,6 +28,7 @@ interface rightHandMenuProps {
   tripForecastTitleViz: boolean;
   tripForecast: Forecast | undefined;
   setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
+  tripInfoIsLoading: boolean;
 }
 
 export const RightHandMenu = ({
@@ -47,22 +48,10 @@ export const RightHandMenu = ({
   tripForecastTitleViz,
   tripForecast,
   setTripForecast,
+  tripInfoIsLoading,
 }: rightHandMenuProps) => {
   const [arrowIcon, setarrowIcon] = useState("/upArrow.svg");
-  const [siteInfoPanelData, setSiteInfoPanelData] = useState<SiteInfoPanelData>(
-    {
-      name: "",
-      noSites: 0,
-      coordinates: "",
-      park: "",
-      description: "",
-      imageUrl: "",
-      waterSource: "",
-      amenities: [],
-      isCampsite: true,
-      linkToGovtSite: "",
-    }
-  );
+  const [selectedMarker, setSelectedMarker] = useState<string>("");
 
   return (
     <div
@@ -98,7 +87,7 @@ export const RightHandMenu = ({
                 display: tripInfoTitleViz === true ? "flex" : "none",
                 color: "black",
                 backgroundColor: "rgba(26, 115, 232,0.5)",
-                fontSize: "1.2rem",
+                fontSize: "1rem",
                 borderRadius: " 25px 25px 0px 0px",
               }}
               onClick={() => {
@@ -112,6 +101,7 @@ export const RightHandMenu = ({
               tripCoordWithBool={tripCoordWithBool}
               segmentCoordinates={segmentCoordinates}
               tripInfoViz={tripInfoViz}
+              tripInfoIsLoading={tripInfoIsLoading}
             />
           </div>
           <div
@@ -121,7 +111,7 @@ export const RightHandMenu = ({
               fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
               padding: "3%",
               color: "black",
-              fontSize: "1.2rem",
+              fontSize: "1rem",
               borderTop: "solid #70757a",
               borderBottom: "solid #70757a",
             }}
@@ -160,7 +150,7 @@ export const RightHandMenu = ({
                 setSiteInfoPanelViz(false);
               }}
             >
-              <div>Backcounrty Sites</div>
+              <div style={{ fontSize: "1rem" }}>Backcountry Sites</div>
               <div style={{ display: "flex", flexGrow: "1" }}></div>
               <img
                 src={arrowIcon}
@@ -174,15 +164,15 @@ export const RightHandMenu = ({
             siteMenuViz={siteMenuViz}
             setZoomToSiteCoord={setZoomToSiteCoord}
             setSiteMenuViz={setSiteMenuViz}
-            setSiteInfoPanelData={setSiteInfoPanelData}
             setSiteInfoPanelViz={setSiteInfoPanelViz}
             setLastClickedLong={setLastClickedLong}
+            setSelectedMarker={setSelectedMarker}
           />
         </div>
         <div>
           <SiteInfoPanel
-            siteInfoPanelData={siteInfoPanelData}
             siteInfoPanelViz={siteInfoPanelViz}
+            selectedMarker={selectedMarker}
           />
         </div>
       </div>

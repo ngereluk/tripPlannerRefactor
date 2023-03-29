@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { tripCoordObj, SegmentData, TripInfoObj } from "../types";
+import LoadingMsg from "../components/loadingMsg";
+import ErrorMsg from "../components/errrorMsg";
 
 export interface tripInfoProps {
   tripCoordWithBool: tripCoordObj[];
   segmentCoordinates: SegmentData[];
   tripInfoViz: boolean;
+  tripInfoIsLoading: boolean;
 }
 
 export const TripInfo = ({
   tripCoordWithBool,
   segmentCoordinates,
   tripInfoViz,
+  tripInfoIsLoading,
 }: tripInfoProps) => {
   const [tripData, setTripData] = useState<TripInfoObj[]>([]);
   const numberOfDays = tripData.filter(
@@ -40,10 +44,12 @@ export const TripInfo = ({
   useEffect(() => {
     const data = configureTripInfo() as TripInfoObj[];
     setTripData(data);
-    for (let item of tripData) {
-    }
   }, [tripInfoViz]);
   {
+    if (tripInfoIsLoading) {
+      return <LoadingMsg />;
+    }
+
     if (tripInfoViz === true) {
       return (
         <div
@@ -66,13 +72,13 @@ export const TripInfo = ({
                         alignItems: "center",
                         paddingLeft: "4%",
                         fontWeight: "bold",
-                        fontSize: "1.19rem",
+                        fontSize: "1rem",
                       }}
                     >
                       <div style={{ paddingRight: "1%" }}>Day 1</div>
                       <img src="/trailStart.svg" style={{ height: "2.4vh" }} />
                     </div>
-                    <div style={{ paddingLeft: "6%", fontSize: "0.9rem" }}>
+                    <div style={{ paddingLeft: "6%", fontSize: "0.8rem" }}>
                       Start your trip at the trailhead -
                       {" " + dataItem.markerName}
                     </div>
@@ -90,7 +96,7 @@ export const TripInfo = ({
                         paddingLeft: "6%",
                       }}
                     >
-                      <div style={{ paddingRight: "1.5%", fontSize: "0.9rem" }}>
+                      <div style={{ paddingRight: "1.5%", fontSize: "0.8rem" }}>
                         Distance:{" "}
                         {" " +
                           (dataItem.segmentLength / 1000).toFixed(2) +
@@ -112,7 +118,7 @@ export const TripInfo = ({
                       borderBottom: "solid #70757a",
                       paddingLeft: "6%",
                       paddingBottom: "3%",
-                      fontSize: "0.9rem",
+                      fontSize: "0.8rem",
                     }}
                   >
                     Night 1 Campsite:{" " + dataItem.markerName}
@@ -136,7 +142,7 @@ export const TripInfo = ({
                         alignItems: "center",
                         paddingLeft: "4%",
                         fontWeight: "bold",
-                        fontSize: "1.19rem",
+                        fontSize: "1rem",
                       }}
                     >
                       <div style={{ paddingRight: "2%" }}>
@@ -149,7 +155,7 @@ export const TripInfo = ({
                         display: "flex",
                         flexDirection: "row",
                         paddingLeft: "6%",
-                        fontSize: "0.9rem",
+                        fontSize: "0.8rem",
                       }}
                     >
                       <div>
@@ -169,10 +175,9 @@ export const TripInfo = ({
                 return (
                   <div
                     style={{
-                      borderBottom: "solid #70757a",
                       paddingLeft: "6%",
                       paddingBottom: "2%",
-                      fontSize: "0.9rem",
+                      fontSize: "0.8rem",
                     }}
                   >
                     Finish your trip at the trail end -
@@ -201,7 +206,7 @@ export const TripInfo = ({
                         }}
                       >
                         <div
-                          style={{ paddingBottom: "1%", fontSize: "0.9rem" }}
+                          style={{ paddingBottom: "1%", fontSize: "0.8rem" }}
                         >
                           Night {numDaysCounter} Campsite:
                           {" " + dataItem.markerName}
@@ -226,7 +231,7 @@ export const TripInfo = ({
                           paddingLeft: "4%",
                           paddingRight: "3%",
                           fontWeight: "bold",
-                          fontSize: "1.19rem",
+                          fontSize: "1rem",
                         }}
                       >
                         Day {numDaysCounter}
@@ -235,7 +240,7 @@ export const TripInfo = ({
                           style={{ height: "2.5vh" }}
                         />
                       </div>
-                      <div style={{ paddingLeft: "6%", fontSize: "0.9rem" }}>
+                      <div style={{ paddingLeft: "6%", fontSize: "0.8rem" }}>
                         Distance:
                         {" " +
                           (dataItem.segmentLength / 1000).toFixed(2) +
