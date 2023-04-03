@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { GeoJSONProps } from "react-leaflet";
 import { GenerateTripInfo } from "./generateTripInfoBtn";
-import { tripCoordObj, SegmentData, Forecast } from "../types";
+import { tripCoordObj, SegmentData, Forecast, MyGeoJson } from "../types";
 
 export interface mapTopMenuProps {
-  geojsonObjects: GeoJSONProps["data"][];
-  setGeojsonObjects: Dispatch<SetStateAction<GeoJSONProps["data"][]>>;
+  geojsonObjects: MyGeoJson[]; //GeoJSONProps["data"][];
+  setGeojsonObjects: Dispatch<SetStateAction<MyGeoJson[]>>;
   coordinatesArray: {
     long: number;
     lat: number;

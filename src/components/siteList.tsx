@@ -1,6 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { api } from "~/utils/api";
-import { SiteInfoPanelData } from "../types";
+import { Dispatch, SetStateAction } from "react";
 
 interface siteListProps {
   siteMenuViz: boolean;

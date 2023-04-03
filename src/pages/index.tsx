@@ -1,14 +1,12 @@
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import { GeoJSONProps } from "react-leaflet";
+import { MyGeoJson } from "../types";
 
 const MyMapContainer = dynamic(() => import("../components/mapContainer"), {
   ssr: false,
 });
 export default function Home() {
-  const [geojsonObjects, setGeojsonObjects] = useState<GeoJSONProps["data"][]>(
-    []
-  );
+  const [geojsonObjects, setGeojsonObjects] = useState<MyGeoJson[]>([]);
   const [zoomToSiteCoord, setZoomToSiteCoord] = useState<{
     lat: number;
     lng: number;

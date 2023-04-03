@@ -2,7 +2,6 @@ import {
   Marker,
   TileLayer,
   GeoJSON,
-  GeoJSONProps,
   Tooltip,
   useMap,
   ZoomControl,
@@ -12,6 +11,7 @@ import { api } from "~/utils/api";
 import { icon } from "leaflet";
 import dynamic from "next/dynamic";
 import StaticPathLabel from "./staticPathLabel";
+import { MyGeoJson } from "../types";
 
 const DetectZoom = dynamic(() => import("./detectZoom"), {
   ssr: false,
@@ -31,8 +31,8 @@ const redMapMarker = icon({
 });
 
 interface kananaskisMapProps {
-  geojsonObjects: GeoJSONProps["data"][];
-  setGeojsonObjects: Dispatch<SetStateAction<GeoJSONProps["data"][]>>;
+  geojsonObjects: MyGeoJson[]; //GeoJSONProps["data"][];
+  setGeojsonObjects: Dispatch<SetStateAction<MyGeoJson[]>>;
   zoomToSiteCoord: {
     lat: number;
     lng: number;
@@ -66,21 +66,14 @@ export const KananaskisMap = ({
   setRouteDataLoading,
   setRouteDataError,
 }: kananaskisMapProps) => {
-  const [isCampsite, setIsCampsite] = useState(true);
   const [segmentLengthOpacity, setSegmentLengthOpacity] = useState("none");
   const {
     data: staticRouteData,
     isLoading: staticRouteDataIsLoading,
     isError: staticRouteDataIsError,
-    // isSuccess,
   } = api.getStaticRouteData.getData.useQuery();
 
-  const {
-    //  isLoading: orsIsLoading,
-    // isError: orsIsError,
-    //isSuccess: orsIsSuccess,
-    mutateAsync,
-  } = api.openRouteService.getRouteData.useMutation();
+  const { mutateAsync } = api.openRouteService.getRouteData.useMutation();
 
   async function getORSData(coordinatesMapToArray: number[][]) {
     if (coordinatesMapToArray !== undefined) {
@@ -114,7 +107,10 @@ export const KananaskisMap = ({
         x.long,
         x.lat,
       ]);
-      getORSData(coordinatesMapToArray);
+      const fetchRouteData = async () => {
+        await getORSData(coordinatesMapToArray);
+      };
+      fetchRouteData().catch(console.error);
     }
   }, [coordinatesArray]);
 
@@ -156,19 +152,16 @@ export const KananaskisMap = ({
       />
       <ZoomControl position="bottomright" />
       {/* el for routes added by user click */}
-      {
-        //   orsData && [orsData.geojsonObject]
-        geojsonObjects.map((data) => {
-          return (
-            <GeoJSON
-              key={JSON.stringify(data)}
-              attribution="&copy; credits due..."
-              //@ts-ignore
-              data={data}
-            />
-          );
-        })
-      }
+      {geojsonObjects.map((data) => {
+        return (
+          <GeoJSON
+            key={JSON.stringify(data)}
+            attribution="&copy; credits due..."
+            //@ts-ignore
+            data={data}
+          />
+        );
+      })}
       {/* el for static generated routes */}
       {staticRouteData &&
         staticRouteData.StaticRouteData.map((data) => {
@@ -198,7 +191,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.20417 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.20417, 50.580097);
             setLastClickedLong(-115.20417);
           },
@@ -213,7 +205,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.178892 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.178892, 50.627449);
             setLastClickedLong(-115.178892);
           },
@@ -241,7 +232,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.267343 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.267343, 50.630093);
             setLastClickedLong(-115.267343);
           },
@@ -269,7 +259,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.232454 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.232454, 50.634741);
             setLastClickedLong(-115.232454);
           },
@@ -296,7 +285,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.275096 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.275096, 50.686718);
             setLastClickedLong(-115.275096);
           },
@@ -324,7 +312,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.009242 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.009242, 50.637443);
             setLastClickedLong(-115.009242);
           },
@@ -353,7 +340,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.11447 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.11447, 51.053327);
             setLastClickedLong(-115.11447);
           },
@@ -381,7 +367,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -114.859643 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-114.859643, 50.723768);
             setLastClickedLong(-114.859643);
           },
@@ -409,7 +394,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.082083 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.082083, 51.023576);
             setLastClickedLong(-115.082083);
           },
@@ -437,7 +421,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -114.98882 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-114.98882, 50.76182);
             setLastClickedLong(-114.98882);
           },
@@ -466,7 +449,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -114.973031 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-114.973031, 50.675607);
             setLastClickedLong(-114.973031);
           },
@@ -494,7 +476,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.252657 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.252657, 50.863738);
             setLastClickedLong(-115.252657);
           },
@@ -522,7 +503,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.229125 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.229125, 50.892203);
             setLastClickedLong(-115.229125);
           },
@@ -550,7 +530,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.248081 ? redMapMarker : blueMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(true);
             setRouteCoordinates(-115.24808, 50.886506);
             setLastClickedLong(-115.248081);
           },
@@ -578,7 +557,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.141244 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.141244, 50.631716);
             setLastClickedLong(-115.141244);
           },
@@ -606,7 +584,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.176086 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.176086, 50.861035);
             setLastClickedLong(-115.176086);
           },
@@ -634,7 +611,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.14843 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.14843, 50.93298);
             setLastClickedLong(-115.14843);
           },
@@ -662,7 +638,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.165736 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.165736, 51.048008);
             setLastClickedLong(-115.165736);
           },
@@ -690,7 +665,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.040435 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.040435, 51.032824);
             setLastClickedLong(-115.040435);
           },
@@ -718,7 +692,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.023372 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.023372, 50.63541);
             setLastClickedLong(-115.023372);
           },
@@ -746,7 +719,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -114.869912 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-114.869912, 50.789153);
             setLastClickedLong(-114.869912);
           },
@@ -774,7 +746,6 @@ export const KananaskisMap = ({
         icon={lastClickedLong === -115.35449 ? redMapMarker : greenMapMarker}
         eventHandlers={{
           click: () => {
-            setIsCampsite(false);
             setRouteCoordinates(-115.35449, 50.868806);
             setLastClickedLong(-115.35449);
           },

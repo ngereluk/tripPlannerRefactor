@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { tripCoordObj, SegmentData, TripInfoObj } from "../types";
 import LoadingMsg from "../components/loadingMsg";
-import ErrorMsg from "../components/errrorMsg";
 
 export interface tripInfoProps {
   tripCoordWithBool: tripCoordObj[];
@@ -80,7 +79,7 @@ export const TripInfo = ({
                     </div>
                     <div style={{ paddingLeft: "6%", fontSize: "0.8rem" }}>
                       Start your trip at the trailhead -
-                      {" " + dataItem.markerName}
+                      {dataItem.markerName && " " + `${dataItem.markerName}`}
                     </div>
                   </div>
                 );
@@ -103,7 +102,8 @@ export const TripInfo = ({
                           " km" +
                           " "}{" "}
                         Gross Elevation Gain:{" "}
-                        {" " + dataItem.segmentGrossElevation + " m"}
+                        {dataItem.segmentGrossElevation &&
+                          " " + `${dataItem.segmentGrossElevation}` + " m"}
                       </div>
                     </div>
                   </div>
@@ -121,7 +121,8 @@ export const TripInfo = ({
                       fontSize: "0.8rem",
                     }}
                   >
-                    Night 1 Campsite:{" " + dataItem.markerName}
+                    Night 1 Campsite:
+                    {dataItem.markerName && " " + `${dataItem.markerName}`}
                   </div>
                 );
               }
@@ -146,7 +147,7 @@ export const TripInfo = ({
                       }}
                     >
                       <div style={{ paddingRight: "2%" }}>
-                        Day {" " + numberOfDays}
+                        Day {numberOfDays && " " + `${numberOfDays}`}
                       </div>
                       <img src="/finish.svg" style={{ height: "2.4vh" }} />
                     </div>
@@ -165,7 +166,8 @@ export const TripInfo = ({
                           " km" +
                           " "}{" "}
                         Gross Elevation Gain:{" "}
-                        {" " + dataItem.segmentGrossElevation + " m"}
+                        {dataItem.segmentGrossElevation &&
+                          " " + `${dataItem.segmentGrossElevation}` + " m"}
                       </div>
                     </div>
                   </div>
@@ -181,7 +183,7 @@ export const TripInfo = ({
                     }}
                   >
                     Finish your trip at the trail end -
-                    {" " + dataItem.markerName}
+                    {dataItem.markerName && " " + `${dataItem.markerName}`}
                   </div>
                 );
               } else {
@@ -209,7 +211,8 @@ export const TripInfo = ({
                           style={{ paddingBottom: "1%", fontSize: "0.8rem" }}
                         >
                           Night {numDaysCounter} Campsite:
-                          {" " + dataItem.markerName}
+                          {dataItem.markerName &&
+                            " " + `${dataItem.markerName}`}
                         </div>
                       </div>
                     </div>
@@ -247,7 +250,8 @@ export const TripInfo = ({
                           " km" +
                           " "}
                         Gross Elevation Gain:
-                        {" " + dataItem.segmentGrossElevation + " m"}
+                        {dataItem.segmentGrossElevation &&
+                          " " + `${dataItem.segmentGrossElevation}` + " m"}
                       </div>
                     </div>
                   );

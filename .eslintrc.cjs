@@ -21,17 +21,13 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
-      },
-    ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "@next/next/no-img-element": "off",
     "jsx-a11y/alt-text": "off",
     "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/require-await": "off",
   },
 };
 

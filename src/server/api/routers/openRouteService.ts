@@ -1,6 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { GeoJSONProps } from "react-leaflet";
+//import { GeoJSONProps } from "react-leaflet";
+import { MyGeoJson } from "../../../types";
 
 const coordinateSchema = z.number().array();
 
@@ -23,9 +24,9 @@ export const openRouteService = createTRPCRouter({
         },
       });
 
-      const geojsonObject = await ormResponse.json();
+      const geojsonObject = (await ormResponse.json()) as MyGeoJson;
       return {
-        geojsonObject: geojsonObject as GeoJSONProps["data"],
+        geojsonObject: geojsonObject,
       };
     }),
 });

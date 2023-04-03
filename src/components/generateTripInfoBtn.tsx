@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { GeoJSONProps } from "react-leaflet";
+//import { GeoJSONProps } from "react-leaflet";
 import { api } from "~/utils/api";
-import { tripCoordObj, SegmentData } from "../types";
-var _ = require("lodash");
+import { tripCoordObj, SegmentData, MyGeoJson } from "../types";
+import _ from "lodash";
 
 interface generateTripInfoProps {
-  geojsonObjects: GeoJSONProps["data"][];
+  geojsonObjects: MyGeoJson[]; //GeoJSONProps["data"][];
   setTripCoordWithBool: Dispatch<SetStateAction<tripCoordObj[]>>;
   setSegmentCoordinates: Dispatch<SetStateAction<SegmentData[]>>;
   setTripInfoViz: Dispatch<SetStateAction<boolean>>;
@@ -45,7 +45,6 @@ export const GenerateTripInfo = ({
   const {
     isLoading: routeDataIsLoading,
     isError: routeDataIsError,
-    //    isSuccess: routeDataIsSuccess,
     mutateAsync: getRouteData,
   } = api.getRouteDataForTrip.getData.useMutation();
 
@@ -83,14 +82,16 @@ export const GenerateTripInfo = ({
     setSiteInfoPanelViz(false);
 
     //get campsite names and corresponding coordinates
-    let inputCoordWithCampsiteBool = [] as tripCoordObj[];
+    const inputCoordWithCampsiteBool = [] as tripCoordObj[];
 
     const markerNameJSON = await getStaticMarkerNameAndCoord();
     if (markerNameJSON !== undefined && geojsonObjects[0] !== undefined) {
       //compare the inpute coordinates of each marker (inside geojsonObjects) to the master list of site names and coordinates
       //to find the names for each site. Also add an isTrailhead bool set to false which will be properly initiallized in the next step
       //@ts-ignore
-      for (let coord of geojsonObjects[0].metadata.query.coordinates) {
+      const coordinates = geojsonObjects[0].metadata.query.coordinates; //as number[][];
+      //@ts-ignore
+      for (const coord of coordinates) {
         const markerNameObj = markerNameJSON.find(
           (markerNameStaticObj) =>
             markerNameStaticObj.coordinates[0] === coord[0] &&
@@ -129,6 +130,7 @@ export const GenerateTripInfo = ({
     const startingPointIsTrailHead = _.findIndex(
       trailHeadCoordinates,
       function (el: number[]) {
+        //@ts-ignore
         return el[0] == startingPoint[0] && el[1] == startingPoint[1];
       }
     );
@@ -136,19 +138,20 @@ export const GenerateTripInfo = ({
     const endPointIsTrailHead = _.findIndex(
       trailHeadCoordinates,
       function (el: number[]) {
+        //@ts-ignore
         return el[0] == endingPoint[0] && el[1] == endingPoint[1];
       }
     );
 
     if (startingPointIsTrailHead !== -1 && endPointIsTrailHead !== -1) {
       //if they have started and ended their route at a trail head, the trip plan can be created
-      for (let coordinateObj of tripInputCoordinates) {
+      for (const coordinateObj of tripInputCoordinates) {
         if (
           _.findIndex(trailHeadCoordinates, function (el: number[]) {
             return el[0] == coordinateObj[0] && el[1] == coordinateObj[1];
           }) !== -1
         ) {
-          let objIndex = _.findIndex(
+          const objIndex = _.findIndex(
             inputCoordWithCampsiteBool,
             function (el: tripCoordObj) {
               return (
@@ -173,8 +176,8 @@ export const GenerateTripInfo = ({
       return;
     }
     //pair up coords to get segment data
-    let dailyTotals = [] as SegmentData[];
-    for (let coordinate of tripInputCoordinates.slice(0, -1)) {
+    const dailyTotals = [] as SegmentData[];
+    for (const coordinate of tripInputCoordinates.slice(0, -1)) {
       if (coordinate) {
         const coordinatePair = [
           coordinate,
@@ -184,7 +187,7 @@ export const GenerateTripInfo = ({
             }) + 1
           ],
         ];
-
+        //@ts-ignore
         const staticData = await getStaticRouteData(coordinatePair);
 
         dailyTotals.push(staticData);
@@ -214,7 +217,7 @@ export const GenerateTripInfo = ({
         cursor: "pointer",
         fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
       }}
-      onClick={generateTripInfo}
+      onClick={() => void generateTripInfo()}
     >
       {" "}
       <img

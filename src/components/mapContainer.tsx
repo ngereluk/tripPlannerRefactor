@@ -1,16 +1,16 @@
-import { MapContainer, GeoJSONProps } from "react-leaflet";
+import { MapContainer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { RightHandMenu } from "./rightHandMenu";
-import { tripCoordObj, SegmentData, Forecast } from "../types";
+import { tripCoordObj, SegmentData, Forecast, MyGeoJson } from "../types";
 import MapLegend from "./mapLegend";
 import MapTopMenu from "./mapTopMenu";
 import KananaskisMap from "../components/kananaskisMap";
 import LoadingMsg from "../components/loadingMsg";
 
 interface myMapContainerProps {
-  geojsonObjects: GeoJSONProps["data"][];
-  setGeojsonObjects: Dispatch<SetStateAction<GeoJSONProps["data"][]>>;
+  geojsonObjects: MyGeoJson[];
+  setGeojsonObjects: Dispatch<SetStateAction<MyGeoJson[]>>;
   zoomToSiteCoord: {
     lat: number;
     lng: number;

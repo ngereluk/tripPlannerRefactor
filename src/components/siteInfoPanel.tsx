@@ -34,15 +34,20 @@ const SiteInfoPanel = ({
     mutateAsync,
   } = api.getStaticMarkerInfo.getMarkerData.useMutation();
 
+  async function getMarkerData() {
+    if (selectedMarker !== "") {
+      const res = await mutateAsync({
+        selectedMarker: selectedMarker,
+      });
+      setSiteInfoPanelData(res.markerData);
+    }
+  }
+
   useEffect(() => {
-    (async () => {
-      if (selectedMarker !== "") {
-        const res = await mutateAsync({
-          selectedMarker: selectedMarker,
-        });
-        setSiteInfoPanelData(res.markerData);
-      }
-    })();
+    const fetchRouteData = async () => {
+      await getMarkerData();
+    };
+    fetchRouteData().catch(console.error);
   }, [selectedMarker]);
 
   {
@@ -125,7 +130,7 @@ const SiteInfoPanel = ({
           >
             {siteInfoPanelData.amenities.map((amenity) => (
               <div
-                key={amenity + Math.random().toString()}
+                key={Math.random()}
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -144,16 +149,18 @@ const SiteInfoPanel = ({
           </div>
           <div style={{ padding: "5%" }}>
             <div style={{ fontSize: "0.8rem" }}>
-              Number of sites:{" " + siteInfoPanelData.noSites}
+              Number of sites:{" " + siteInfoPanelData.noSites.toString()}
             </div>
             <div style={{ fontSize: "0.8rem" }}>
               Water Source:{" " + siteInfoPanelData.waterSource}
             </div>
             <div style={{ fontSize: "0.8rem" }}>
-              {" Lat: " +
-                siteInfoPanelData.coordinates[0] +
-                " Long: " +
-                siteInfoPanelData.coordinates[1]}
+              {siteInfoPanelData.coordinates[0] &&
+                siteInfoPanelData.coordinates[1] &&
+                " Lat: " +
+                  ` ${siteInfoPanelData.coordinates[0]}` +
+                  " Long: " +
+                  `${siteInfoPanelData.coordinates[1]}`}
             </div>
             <a
               href={siteInfoPanelData.linkToGovtSite}

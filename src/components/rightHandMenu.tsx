@@ -4,7 +4,7 @@ import TripInfo from "./tripInfo";
 import TripForecast from "./tripForecast";
 import SiteList from "./siteList";
 import SiteInfoPanel from "./siteInfoPanel";
-import { SiteInfoPanelData, Forecast } from "../types";
+import { Forecast } from "../types";
 
 interface rightHandMenuProps {
   setZoomToSiteCoord: Dispatch<

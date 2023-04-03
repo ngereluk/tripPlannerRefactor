@@ -1,5 +1,3 @@
-import { string } from "zod";
-
 export interface tripCoordObj {
   coordinate: number[];
   isTrailHead: boolean;
@@ -157,4 +155,75 @@ export interface TripInfoObj {
   markerName?: string;
   segmentGrossElevation?: number;
   segmentLength?: number;
+}
+
+export interface MyGeoJson {
+  bbox: number[];
+  features: MyGeoJsonFeatures;
+  metadata: MyGeoJsonMetadata;
+  type: string;
+}
+
+export interface MyGeoJsonFeatures {
+  bbox: number[];
+  type: string;
+  properties: MyGeoJsonFeaturesProperities;
+  geometry: MyGeoJsonFeaturesGeometry;
+}
+
+export interface MyGeoJsonFeaturesProperities {
+  ascent: number;
+  descent: number;
+  segments: MyGeoJsonFeaturesProperitiesSegments[];
+  summary: MyGeoJsonFeaturesProperitiesSummary;
+  way_points: number[];
+  type: string;
+}
+
+export interface MyGeoJsonFeaturesProperitiesSegments {
+  ascent: number;
+  descent: number;
+  distance: number;
+  duration: number;
+  steps: MyGeoJsonFeaturesProperitiesSegmentsSteps[];
+}
+
+export interface MyGeoJsonFeaturesProperitiesSegmentsSteps {
+  distance: number;
+  duration: number;
+  instruction: string;
+  name: string;
+  type: number;
+  way_points: number[];
+}
+
+export interface MyGeoJsonFeaturesProperitiesSummary {
+  distance: number;
+  duration: number;
+}
+
+export interface MyGeoJsonFeaturesGeometry {
+  coordinates: number[][];
+  type: string;
+}
+
+export interface MyGeoJsonMetadata {
+  attribution: string;
+  service: string;
+  timestamp: number;
+  query: MyGeoJsonMetadataQuery;
+  engine: MyGeoJsonMetadataEngine;
+}
+
+export interface MyGeoJsonMetadataQuery {
+  coordinates: number[][];
+  elevation: boolean;
+  format: string;
+  profile: string;
+}
+
+export interface MyGeoJsonMetadataEngine {
+  build_date: string;
+  graph_date: string;
+  version: string;
 }
