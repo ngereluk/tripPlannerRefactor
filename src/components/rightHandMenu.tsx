@@ -57,6 +57,7 @@ export const RightHandMenu = ({
     <div
       style={{
         width: "100%",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -65,6 +66,7 @@ export const RightHandMenu = ({
         borderRadius: "25px",
         boxShadow:
           "0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
+        overflowY: "auto",
       }}
     >
       <div

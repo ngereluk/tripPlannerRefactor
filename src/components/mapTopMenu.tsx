@@ -95,6 +95,7 @@ export const MapTopMenu = ({
       lat: 50.814061,
       lng: -115.163614,
     });
+    setSiteInfoPanelViz(false);
   }
 
   function undo() {

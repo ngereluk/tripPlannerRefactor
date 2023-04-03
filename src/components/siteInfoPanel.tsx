@@ -70,8 +70,7 @@ const SiteInfoPanel = ({
             color: "black",
             backgroundColor: "white",
             borderRadius: "0px 0px 25px 25px",
-            height: "80vh",
-            overflowY: "auto",
+            paddingBottom: "10%",
           }}
         >
           <img src={siteInfoPanelData.imageUrl} style={{ width: "100%" }} />
