@@ -164,7 +164,7 @@ export const KananaskisMap = ({
       })}
       {/* el for static generated routes */}
       {staticRouteData &&
-        staticRouteData.StaticRouteData.map((data) => {
+        staticRouteData.StaticRouteLengths.map((data) => {
           return (
             <GeoJSON
               key={JSON.stringify(data)}
