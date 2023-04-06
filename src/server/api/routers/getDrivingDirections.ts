@@ -4,17 +4,16 @@ import { MyGeoJson } from "../../../types";
 
 const coordinateSchema = z.number().array();
 
-export const openRouteService = createTRPCRouter({
+export const getDrivingDirections = createTRPCRouter({
   getRouteData: publicProcedure
     .input(z.object({ coordinates: z.array(coordinateSchema).optional() }))
     .mutation(async ({ input }) => {
       const url =
-        "https://api.openrouteservice.org/v2/directions/foot-hiking/geojson";
+        "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
       const ormResponse = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
           coordinates: input.coordinates,
-          elevation: "true",
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -24,6 +23,7 @@ export const openRouteService = createTRPCRouter({
       });
 
       const geojsonObject = (await ormResponse.json()) as MyGeoJson;
+
       return {
         geojsonObject: geojsonObject,
       };

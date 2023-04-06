@@ -21,6 +21,8 @@ interface generateTripInfoProps {
   setUserError: Dispatch<SetStateAction<string>>;
   setTripInfoIsLoading: Dispatch<SetStateAction<boolean>>;
   setTripInfoLoadingError: Dispatch<SetStateAction<boolean>>;
+  setDirectionsTitleViz: Dispatch<SetStateAction<boolean>>;
+  setdDrectionsViz: Dispatch<SetStateAction<boolean>>;
 }
 export const GenerateTripInfo = ({
   geojsonObjects,
@@ -39,6 +41,8 @@ export const GenerateTripInfo = ({
   setUserError,
   setTripInfoIsLoading,
   setTripInfoLoadingError,
+  setDirectionsTitleViz,
+  setdDrectionsViz,
 }: generateTripInfoProps) => {
   const { mutateAsync: getMarkers } =
     api.getStaticMarkerName.getData.useMutation();
@@ -205,6 +209,8 @@ export const GenerateTripInfo = ({
     setUndoBtnViz(false);
     setClearBtnViz(false);
     setSiteMenuViz(false);
+    setDirectionsTitleViz(true);
+    setdDrectionsViz(true);
   }
   return (
     <div

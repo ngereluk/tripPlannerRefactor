@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GenerateTripInfo } from "./generateTripInfoBtn";
-import { tripCoordObj, SegmentData, Forecast, MyGeoJson } from "../types";
+import {
+  tripCoordObj,
+  SegmentData,
+  Forecast,
+  MyGeoJson,
+  AddressObj,
+} from "../types";
 
 export interface mapTopMenuProps {
   geojsonObjects: MyGeoJson[]; //GeoJSONProps["data"][];
@@ -36,6 +42,13 @@ export interface mapTopMenuProps {
       lng: number;
     }>
   >;
+  setDirectionsTitleViz: Dispatch<SetStateAction<boolean>>;
+  setdDrectionsViz: Dispatch<SetStateAction<boolean>>;
+  setDrivingDirections: Dispatch<SetStateAction<MyGeoJson | undefined>>;
+  setAddress: Dispatch<SetStateAction<string>>;
+  setAdrForUserVerification: Dispatch<SetStateAction<AddressObj[] | undefined>>;
+  setSelectedAdrId: Dispatch<SetStateAction<string>>;
+  setGetDirectionsBtnDisabled: Dispatch<SetStateAction<boolean>>;
 }
 
 export const MapTopMenu = ({
@@ -57,6 +70,13 @@ export const MapTopMenu = ({
   setTripInfoIsLoading,
   setTripInfoLoadingError,
   setZoomToSiteCoord,
+  setDirectionsTitleViz,
+  setdDrectionsViz,
+  setDrivingDirections,
+  setAddress,
+  setAdrForUserVerification,
+  setGetDirectionsBtnDisabled,
+  setSelectedAdrId,
 }: mapTopMenuProps) => {
   const [generateTripBtnViz, setGenrateTripBtnViz] = useState(false);
   const [clearTripBtnViz, setClearTripBtnViz] = useState(false);
@@ -96,6 +116,13 @@ export const MapTopMenu = ({
       lng: -115.163614,
     });
     setSiteInfoPanelViz(false);
+    setDirectionsTitleViz(false);
+    setdDrectionsViz(false);
+    setDrivingDirections(undefined);
+    setAddress("");
+    setAdrForUserVerification([]);
+    setSelectedAdrId("");
+    setGetDirectionsBtnDisabled(true);
   }
 
   function undo() {
@@ -158,6 +185,8 @@ export const MapTopMenu = ({
           setUserError={setUserError}
           setTripInfoIsLoading={setTripInfoIsLoading}
           setTripInfoLoadingError={setTripInfoLoadingError}
+          setDirectionsTitleViz={setDirectionsTitleViz}
+          setdDrectionsViz={setdDrectionsViz}
         />
       </div>
       <div

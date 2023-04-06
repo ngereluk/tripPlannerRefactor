@@ -159,7 +159,7 @@ export interface TripInfoObj {
 
 export interface MyGeoJson {
   bbox: number[];
-  features: MyGeoJsonFeatures;
+  features: MyGeoJsonFeatures[];
   metadata: MyGeoJsonMetadata;
   type: string;
 }
@@ -226,4 +226,43 @@ export interface MyGeoJsonMetadataEngine {
   build_date: string;
   graph_date: string;
   version: string;
+}
+
+export interface AddressObj {
+  geometry: AddressGeometry;
+  properties: AddressProperities;
+  type: string;
+}
+
+export interface AddressGeometry {
+  coordinates: number[];
+  type: string;
+}
+
+export interface AddressProperities {
+  accuracy: string;
+  confidence: number;
+  continent: string;
+  continent_gid: string;
+  country: string;
+  country_a: string;
+  country_gid: string;
+  county: string;
+  county_gid: string;
+  gid: string;
+  housenumber: string;
+  id: string;
+  label: string;
+  layer: string;
+  locality?: string;
+  locality_gid: string;
+  match_type: string;
+  name: string;
+  region: string;
+  region_a: string;
+  region_gid: string;
+  source: string;
+  source_id: string;
+  street: string;
+  postalcode?: string;
 }

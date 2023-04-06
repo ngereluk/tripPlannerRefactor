@@ -7,11 +7,17 @@ import ErrorMsg from "../components/errrorMsg";
 interface siteInfoPanelProps {
   siteInfoPanelViz: boolean;
   selectedMarker: string;
+  loadingMsgHeight: string;
+  loadingMsgWidth: string;
+  loadingMsgPaddingBottom: string;
 }
 
 const SiteInfoPanel = ({
   siteInfoPanelViz,
   selectedMarker,
+  loadingMsgHeight,
+  loadingMsgWidth,
+  loadingMsgPaddingBottom,
 }: siteInfoPanelProps) => {
   const [siteInfoPanelData, setSiteInfoPanelData] = useState<SiteInfoPanelData>(
     {
@@ -52,7 +58,13 @@ const SiteInfoPanel = ({
 
   {
     if (siteDataIsLoading) {
-      return <LoadingMsg />;
+      return (
+        <LoadingMsg
+          loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+          loadingMsgHeight={loadingMsgHeight}
+          loadingMsgWidth={loadingMsgWidth}
+        />
+      );
     }
     if (siteDataIsError) {
       return <ErrorMsg />;

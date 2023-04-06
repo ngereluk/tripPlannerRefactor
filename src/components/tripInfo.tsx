@@ -7,6 +7,9 @@ export interface tripInfoProps {
   segmentCoordinates: SegmentData[];
   tripInfoViz: boolean;
   tripInfoIsLoading: boolean;
+  loadingMsgHeight: string;
+  loadingMsgWidth: string;
+  loadingMsgPaddingBottom: string;
 }
 
 export const TripInfo = ({
@@ -14,6 +17,9 @@ export const TripInfo = ({
   segmentCoordinates,
   tripInfoViz,
   tripInfoIsLoading,
+  loadingMsgHeight,
+  loadingMsgWidth,
+  loadingMsgPaddingBottom,
 }: tripInfoProps) => {
   const [tripData, setTripData] = useState<TripInfoObj[]>([]);
   const numberOfDays = tripData.filter(
@@ -46,7 +52,13 @@ export const TripInfo = ({
   }, [tripInfoViz]);
   {
     if (tripInfoIsLoading) {
-      return <LoadingMsg />;
+      return (
+        <LoadingMsg
+          loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+          loadingMsgHeight={loadingMsgHeight}
+          loadingMsgWidth={loadingMsgWidth}
+        />
+      );
     }
 
     if (tripInfoViz === true) {

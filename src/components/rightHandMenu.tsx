@@ -1,10 +1,11 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
-import { tripCoordObj, SegmentData } from "../types";
+import { tripCoordObj, SegmentData, AddressObj } from "../types";
 import TripInfo from "./tripInfo";
 import TripForecast from "./tripForecast";
 import SiteList from "./siteList";
 import SiteInfoPanel from "./siteInfoPanel";
-import { Forecast } from "../types";
+import { Forecast, MyGeoJson } from "../types";
+import DrivingRoutePlanner from "../components/drivingRoutePlanner";
 
 interface rightHandMenuProps {
   setZoomToSiteCoord: Dispatch<
@@ -29,6 +30,26 @@ interface rightHandMenuProps {
   tripForecast: Forecast | undefined;
   setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
   tripInfoIsLoading: boolean;
+  directionsTitleViz: boolean;
+  directionsViz: boolean;
+  setdDrectionsViz: Dispatch<SetStateAction<boolean>>;
+  drivingDirections: MyGeoJson | undefined;
+  setDrivingDirections: Dispatch<SetStateAction<MyGeoJson | undefined>>;
+  address: string;
+  setAddress: Dispatch<SetStateAction<string>>;
+  loadingMsgHeight: string;
+  setLoadingMsgHeight: Dispatch<SetStateAction<string>>;
+  loadingMsgWidth: string;
+  setLoadingMsgWidth: Dispatch<SetStateAction<string>>;
+  loadingMsgPaddingBottom: string;
+  setLoadingMsgPaddingBottom: Dispatch<SetStateAction<string>>;
+  setAdrForUserVerification: Dispatch<SetStateAction<AddressObj[] | undefined>>;
+  adrForUserVerification: AddressObj[] | undefined;
+  selectedAdrId: string;
+  setSelectedAdrId: Dispatch<SetStateAction<string>>;
+  getDirectionsBtnDisabled: boolean;
+  setGetDirectionsBtnDisabled: Dispatch<SetStateAction<boolean>>;
+  setShowDirectionsInfoTooltipOnHover: Dispatch<SetStateAction<boolean>>;
 }
 
 export const RightHandMenu = ({
@@ -49,6 +70,26 @@ export const RightHandMenu = ({
   tripForecast,
   setTripForecast,
   tripInfoIsLoading,
+  directionsTitleViz,
+  directionsViz,
+  setdDrectionsViz,
+  drivingDirections,
+  setDrivingDirections,
+  setAddress,
+  address,
+  loadingMsgHeight,
+  setLoadingMsgHeight,
+  loadingMsgWidth,
+  setLoadingMsgWidth,
+  loadingMsgPaddingBottom,
+  setLoadingMsgPaddingBottom,
+  setAdrForUserVerification,
+  adrForUserVerification,
+  setSelectedAdrId,
+  selectedAdrId,
+  getDirectionsBtnDisabled,
+  setGetDirectionsBtnDisabled,
+  setShowDirectionsInfoTooltipOnHover,
 }: rightHandMenuProps) => {
   const [arrowIcon, setarrowIcon] = useState("/upArrow.svg");
   const [selectedMarker, setSelectedMarker] = useState<string>("");
@@ -104,6 +145,9 @@ export const RightHandMenu = ({
               segmentCoordinates={segmentCoordinates}
               tripInfoViz={tripInfoViz}
               tripInfoIsLoading={tripInfoIsLoading}
+              loadingMsgHeight={loadingMsgHeight}
+              loadingMsgWidth={loadingMsgWidth}
+              loadingMsgPaddingBottom={loadingMsgPaddingBottom}
             />
           </div>
           <div
@@ -130,7 +174,64 @@ export const RightHandMenu = ({
             tripForecastViz={tripForecastViz}
             tripForecast={tripForecast}
             setTripForecast={setTripForecast}
+            loadingMsgHeight={loadingMsgHeight}
+            setLoadingMsgHeight={setLoadingMsgHeight}
+            loadingMsgWidth={loadingMsgWidth}
+            setLoadingMsgWidth={setLoadingMsgWidth}
+            loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+            setLoadingMsgPaddingBottom={setLoadingMsgPaddingBottom}
           />{" "}
+          <div
+            style={{
+              display: directionsTitleViz ? "flex" : "none",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(26, 115, 232,0.5)",
+              fontFamily: "'Google Sans',Roboto,Arial,sans-serif",
+              padding: "3%",
+              color: "black",
+              fontSize: "1rem",
+              borderTop: "solid #70757a",
+              borderBottom: "solid #70757a",
+            }}
+            onClick={() => {
+              const newForecastViz = !directionsViz;
+              setdDrectionsViz(newForecastViz);
+            }}
+          >
+            <div> Directions to Trailhead</div>
+            <div style={{ display: "flex", flexGrow: "1" }}></div>
+            <img
+              src="/informationBlack.svg"
+              style={{ height: "2vh" }}
+              onMouseEnter={() => {
+                setShowDirectionsInfoTooltipOnHover(true);
+              }}
+              onMouseLeave={() => {
+                setShowDirectionsInfoTooltipOnHover(false);
+              }}
+            />
+          </div>
+          <DrivingRoutePlanner
+            directionsViz={directionsViz}
+            drivingDirections={drivingDirections}
+            setDrivingDirections={setDrivingDirections}
+            tripCoordWithBool={tripCoordWithBool}
+            setAddress={setAddress}
+            address={address}
+            loadingMsgHeight={loadingMsgHeight}
+            setLoadingMsgHeight={setLoadingMsgHeight}
+            loadingMsgWidth={loadingMsgWidth}
+            setLoadingMsgWidth={setLoadingMsgWidth}
+            loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+            setAdrForUserVerification={setAdrForUserVerification}
+            adrForUserVerification={adrForUserVerification}
+            selectedAdrId={selectedAdrId}
+            setSelectedAdrId={setSelectedAdrId}
+            getDirectionsBtnDisabled={getDirectionsBtnDisabled}
+            setGetDirectionsBtnDisabled={setGetDirectionsBtnDisabled}
+          />
           <div style={{ padding: "4%" }}>
             <div
               style={{
@@ -175,6 +276,9 @@ export const RightHandMenu = ({
           <SiteInfoPanel
             siteInfoPanelViz={siteInfoPanelViz}
             selectedMarker={selectedMarker}
+            loadingMsgHeight={loadingMsgHeight}
+            loadingMsgWidth={loadingMsgWidth}
+            loadingMsgPaddingBottom={loadingMsgPaddingBottom}
           />
         </div>
       </div>

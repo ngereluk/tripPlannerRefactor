@@ -2,7 +2,13 @@ import { MapContainer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { RightHandMenu } from "./rightHandMenu";
-import { tripCoordObj, SegmentData, Forecast, MyGeoJson } from "../types";
+import {
+  tripCoordObj,
+  SegmentData,
+  Forecast,
+  MyGeoJson,
+  AddressObj,
+} from "../types";
 import MapLegend from "./mapLegend";
 import MapTopMenu from "./mapTopMenu";
 import KananaskisMap from "../components/kananaskisMap";
@@ -44,6 +50,11 @@ const MyMapContainer = ({
   const [tripInfoTitleViz, setTripInfoTitleViz] = useState(false);
   const [tripForecastTitleViz, setTripForecastTitleViz] = useState(false);
   const [tripForecastViz, setTripForecastViz] = useState(false);
+  const [directionsTitleViz, setDirectionsTitleViz] = useState(false);
+  const [directionsViz, setdDrectionsViz] = useState(false);
+  const [drivingDirections, setDrivingDirections] = useState<MyGeoJson>();
+  const [adrForUserVerification, setAdrForUserVerification] =
+    useState<AddressObj[]>();
   const [siteInfoPanelViz, setSiteInfoPanelViz] = useState(false);
   const [lastClickedLong, setLastClickedLong] = useState<number>(0);
   const [siteMenuViz, setSiteMenuViz] = useState(true);
@@ -54,6 +65,18 @@ const MyMapContainer = ({
     useState<boolean>(false);
   const [routeDataLoading, setRouteDataLoading] = useState<boolean>(false);
   const [routeDataError, setRouteDataError] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+  const [loadingMsgPaddingBottom, setLoadingMsgPaddingBottom] =
+    useState<string>("10%");
+  const [loadingMsgHeight, setLoadingMsgHeight] = useState<string>("100%");
+  const [loadingMsgWidth, setLoadingMsgWidth] = useState<string>("100%");
+  const [selectedAdrId, setSelectedAdrId] = useState<string>("");
+  const [getDirectionsBtnDisabled, setGetDirectionsBtnDisabled] =
+    useState<boolean>(true);
+  const [
+    showDirectionsInfoTooltipOnHover,
+    setShowDirectionsInfoTooltipOnHover,
+  ] = useState<boolean>(false);
 
   useEffect(() => {
     if (tripInfoLoadingError) {
@@ -141,6 +164,48 @@ const MyMapContainer = ({
       </div>
       <div
         style={{
+          display: showDirectionsInfoTooltipOnHover ? "block" : "none",
+          position: "absolute",
+          zIndex: "10002",
+          backgroundColor: "white",
+          color: "black",
+          paddingLeft: "2%",
+          paddingRight: "2%",
+          paddingTop: "1%",
+          paddingBottom: "1%",
+
+          left: "18%",
+          top: "58%",
+          width: "20%",
+          borderRadius: "25px",
+          boxShadow:
+            "0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)",
+          alignItems: "flex-start",
+          justifyContent: "flex-end",
+          cursor: "pointer",
+          fontSize: "0.8rem",
+        }}
+      >
+        <div style={{ fontWeight: "bold" }}>
+          Some notes about the directions feature:
+        </div>
+        <ul style={{ paddingLeft: "7%" }}>
+          {" "}
+          <li>Directions are only available for addresses in Alberta</li>
+          <li>
+            If your selected trail head is Elbow Pass, clicking the View Route
+            in Google Maps hyperlink between Dec. 1 and June 14 will not return
+            any routes. This portion of Highway 40 is between on these dates.{" "}
+          </li>
+          <li>
+            If your selected trail head is Little Elbow, clicking the View Route
+            in Google Maps hyperlink between Dec. 1 and May 14 will not return
+            any routes. Highway 66 is closed between these dates.{" "}
+          </li>
+        </ul>
+      </div>
+      <div
+        style={{
           display: routeDataLoading ? "block" : "none",
           position: "absolute",
           zIndex: "10002",
@@ -157,7 +222,11 @@ const MyMapContainer = ({
           cursor: "pointer",
         }}
       >
-        <LoadingMsg />
+        <LoadingMsg
+          loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+          loadingMsgHeight={loadingMsgHeight}
+          loadingMsgWidth={loadingMsgWidth}
+        />{" "}
       </div>
       <div
         style={{
@@ -194,6 +263,28 @@ const MyMapContainer = ({
             tripForecast={tripForecast}
             setTripForecast={setTripForecast}
             tripInfoIsLoading={tripInfoIsLoading}
+            directionsTitleViz={directionsTitleViz}
+            directionsViz={directionsViz}
+            setdDrectionsViz={setdDrectionsViz}
+            drivingDirections={drivingDirections}
+            setDrivingDirections={setDrivingDirections}
+            address={address}
+            setAddress={setAddress}
+            loadingMsgHeight={loadingMsgHeight}
+            setLoadingMsgHeight={setLoadingMsgHeight}
+            loadingMsgWidth={loadingMsgWidth}
+            setLoadingMsgWidth={setLoadingMsgWidth}
+            loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+            setLoadingMsgPaddingBottom={setLoadingMsgPaddingBottom}
+            adrForUserVerification={adrForUserVerification}
+            setAdrForUserVerification={setAdrForUserVerification}
+            selectedAdrId={selectedAdrId}
+            setSelectedAdrId={setSelectedAdrId}
+            getDirectionsBtnDisabled={getDirectionsBtnDisabled}
+            setGetDirectionsBtnDisabled={setGetDirectionsBtnDisabled}
+            setShowDirectionsInfoTooltipOnHover={
+              setShowDirectionsInfoTooltipOnHover
+            }
           />
         </div>
         <KananaskisMap
@@ -206,6 +297,7 @@ const MyMapContainer = ({
           setLastClickedLong={setLastClickedLong}
           setRouteDataLoading={setRouteDataLoading}
           setRouteDataError={setRouteDataError}
+          drivingDirections={drivingDirections}
         />
       </div>
       <div
@@ -248,6 +340,13 @@ const MyMapContainer = ({
             setTripInfoIsLoading={setTripInfoIsLoading}
             setTripInfoLoadingError={setTripInfoLoadingError}
             setZoomToSiteCoord={setZoomToSiteCoord}
+            setDirectionsTitleViz={setDirectionsTitleViz}
+            setdDrectionsViz={setdDrectionsViz}
+            setDrivingDirections={setDrivingDirections}
+            setAddress={setAddress}
+            setAdrForUserVerification={setAdrForUserVerification}
+            setSelectedAdrId={setSelectedAdrId}
+            setGetDirectionsBtnDisabled={setGetDirectionsBtnDisabled}
           />
         </div>{" "}
       </div>

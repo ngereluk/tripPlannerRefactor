@@ -1,4 +1,14 @@
-export const LoadingMsg = () => {
+interface loadingMsgProps {
+  loadingMsgPaddingBottom: string;
+  loadingMsgHeight: string;
+  loadingMsgWidth: string;
+}
+
+export const LoadingMsg = ({
+  loadingMsgPaddingBottom,
+  loadingMsgHeight,
+  loadingMsgWidth,
+}: loadingMsgProps) => {
   return (
     <div
       style={{
@@ -6,13 +16,16 @@ export const LoadingMsg = () => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        height: "100%",
-        width: "100%",
-        paddingBottom: "10%",
+        // height: loadingMsgHeight,
+        // width: loadingMsgWidth,
+        paddingBottom: loadingMsgPaddingBottom,
         color: "black",
       }}
     >
-      <img src="/loadingAnimation.svg" />
+      <img
+        src="/loadingAnimation.svg"
+        style={{ height: loadingMsgHeight, width: loadingMsgWidth }}
+      />
       <div>Loading...</div>
     </div>
   );

@@ -12,6 +12,12 @@ export interface tripForecastProps {
   tripForecastViz: boolean;
   tripForecast: Forecast | undefined;
   setTripForecast: Dispatch<SetStateAction<Forecast | undefined>>;
+  loadingMsgHeight: string;
+  setLoadingMsgHeight: Dispatch<SetStateAction<string>>;
+  loadingMsgWidth: string;
+  setLoadingMsgWidth: Dispatch<SetStateAction<string>>;
+  loadingMsgPaddingBottom: string;
+  setLoadingMsgPaddingBottom: Dispatch<SetStateAction<string>>;
 }
 
 export const TripForecast = ({
@@ -20,10 +26,19 @@ export const TripForecast = ({
   tripForecastViz,
   tripForecast,
   setTripForecast,
+  loadingMsgHeight,
+  setLoadingMsgHeight,
+  loadingMsgWidth,
+  setLoadingMsgWidth,
+  loadingMsgPaddingBottom,
+  setLoadingMsgPaddingBottom,
 }: tripForecastProps) => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [forecastHeight, setForecastHeight] = useState("15vh");
+  setLoadingMsgHeight("50%");
+  setLoadingMsgWidth("50%");
+  setLoadingMsgPaddingBottom("5%");
   const {
     isLoading: forecastDataIsLoading,
     isError: forecastDataIsError,
@@ -51,7 +66,13 @@ export const TripForecast = ({
   }
   {
     if (forecastDataIsLoading) {
-      return <LoadingMsg />;
+      return (
+        <LoadingMsg
+          loadingMsgPaddingBottom={loadingMsgPaddingBottom}
+          loadingMsgHeight={loadingMsgHeight}
+          loadingMsgWidth={loadingMsgWidth}
+        />
+      );
     }
     if (forecastDataIsError) {
       return (
